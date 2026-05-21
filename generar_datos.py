@@ -1,19 +1,30 @@
 #!/usr/bin/env python3
 """
 CNEL EP — Generador de datos para dashboard de mantenimientos planificados
-Uso: python generar_datos.py [archivo.xlsx]
 
-Genera data.json en el mismo directorio que este script.
+Uso simple (recomendado):
+    python generar_datos.py
+    → Busca automáticamente el único .xlsx en la misma carpeta
+
+Uso con nombre específico:
+    python generar_datos.py nombre_archivo.xlsx
+
 Requiere: pip install pandas openpyxl
+
+ID ESTABLE: cada trabajo tiene un ID único basado en su contenido
+(empresa + descripción + subestación + fecha), NO en el número de fila.
+Aunque agreguen nuevos trabajos en cualquier posición del Excel,
+los trabajos existentes conservan su ID y el seguimiento no se pierde.
 """
 
 import sys
 import json
+import hashlib
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
-EXCEL_DEFAULT = "Mantenimientos_planificados_CNEL_EP_3031_mayo_y_67junio_SEGUIMIENTO.xlsx"
+# ── helpers ───────────────────────────────────────────────────────────────────
 
 def fmt_date(v):
     try:
@@ -25,13 +36,11 @@ def fmt_date(v):
 def fmt_time(v):
     try:
         if pd.isna(v): return None
-        t = pd.Timestamp(v)
-        return t.strftime('%H:%M')
+        return pd.Timestamp(v).strftime('%H:%M')
     except:
         return None
 
 def ss(v):
-    """Safe string"""
     try:
         if pd.isna(v): return ''
     except:
@@ -39,7 +48,6 @@ def ss(v):
     return str(v).strip() if v is not None else ''
 
 def sf(v):
-    """Safe float"""
     try:
         if pd.isna(v): return 0.0
         return float(v)
@@ -47,66 +55,148 @@ def sf(v):
         return 0.0
 
 def si(v):
-    """Safe int"""
     try:
         if pd.isna(v): return 0
         return int(float(v))
     except:
         return 0
 
+def generar_id(empresa, descripcion, subestacion, alimentador, fecha_inicio):
+    """
+    ID de 8 caracteres basado en el contenido del trabajo.
+    Estable: no cambia si agregan filas nuevas en cualquier posición del Excel.
+    """
+    clave = f"{empresa}|{descripcion[:80]}|{subestacion}|{alimentador}|{fecha_inicio}"
+    return hashlib.md5(clave.encode('utf-8')).hexdigest()[:8].upper()
+
 def is_transelectric(r):
-    """Detecta si el trabajo está coordinado con Transelectric"""
-    fields_to_check = [
-        'Unnamed: 22',
-        'PROYECTO O DESCRIPCIÓN DE LOS TRABAJOS',
-        'Justificación del horario de ejecución',
-    ]
-    for field in fields_to_check:
+    for field in ['Unnamed: 22',
+                  'PROYECTO O DESCRIPCIÓN DE LOS TRABAJOS',
+                  'Justificación del horario de ejecución']:
         val = str(r.get(field, '') or '').lower()
         if 'transelectric' in val or 'transmisor' in val:
             return True
     return False
 
 def normalize_tipo(tipo):
-    """Normaliza el tipo de trabajo a valores canónicos"""
     t = ss(tipo).lower()
     if 'ingreso' in t or 'carga' in t:
         return 'Ingreso Nuevas Cargas'
     return ss(tipo)
 
-def main():
-    # Determinar archivo fuente
-    excel_path = sys.argv[1] if len(sys.argv) > 1 else EXCEL_DEFAULT
-    excel_path = Path(excel_path)
+def encontrar_excel(arg):
+    """
+    Encuentra el archivo Excel a procesar:
+    1. Si se pasó como argumento, usa ese
+    2. Si no, busca el único .xlsx en la carpeta del script
+    3. Si hay varios, muestra cuáles son y pide elegir
+    """
+    carpeta = Path(__file__).parent
 
-    if not excel_path.exists():
-        print(f"ERROR: No se encontró el archivo '{excel_path}'")
-        print(f"Uso: python generar_datos.py <archivo.xlsx>")
+    if arg:
+        p = Path(arg)
+        # Si es solo nombre de archivo, buscarlo en la carpeta del script
+        if not p.is_absolute():
+            p = carpeta / p
+        if not p.exists():
+            print(f"ERROR: No se encontró '{p}'")
+            sys.exit(1)
+        return p
+
+    # Buscar automáticamente — ignorar archivos temporales de Excel (~$)
+    candidatos = [f for f in carpeta.glob('*.xlsx')
+                  if not f.name.startswith('~$')]
+
+    if len(candidatos) == 1:
+        print(f"Excel encontrado automáticamente: {candidatos[0].name}")
+        return candidatos[0]
+    elif len(candidatos) == 0:
+        print("ERROR: No se encontró ningún archivo .xlsx en la carpeta.")
+        print(f"Carpeta buscada: {carpeta}")
+        print("Copie el archivo Excel aquí y vuelva a correr el script.")
+        sys.exit(1)
+    else:
+        print(f"Se encontraron {len(candidatos)} archivos Excel en la carpeta:")
+        for i, f in enumerate(candidatos, 1):
+            print(f"  {i}. {f.name}")
+        print("\nEspecifique cuál usar:")
+        print(f"  python generar_datos.py \"nombre_del_archivo.xlsx\"")
         sys.exit(1)
 
-    print(f"Leyendo: {excel_path}")
+# ── main ──────────────────────────────────────────────────────────────────────
+
+def main():
+    arg = sys.argv[1] if len(sys.argv) > 1 else None
+    excel_path = encontrar_excel(arg)
+
+    print(f"\nLeyendo: {excel_path.name}")
     xl = pd.ExcelFile(excel_path)
     df = pd.read_excel(xl, sheet_name='Hoja1', parse_dates=['Fecha de Inicio', 'Fecha de Fin'])
     df.columns = [c.strip().replace('\n', ' ') for c in df.columns]
-
     print(f"  → {len(df)} filas encontradas")
 
+    # Cargar seguimiento existente para preservarlo
+    output_path = Path(__file__).parent / 'data.json'
+    seguimiento_previo = {}
+    if output_path.exists():
+        try:
+            with open(output_path, 'r', encoding='utf-8') as f:
+                data_prev = json.load(f)
+            for t in data_prev.get('trabajos', []):
+                if t.get('estado') != 'pendiente' or t.get('completado_por') or t.get('obs_ejecucion'):
+                    seguimiento_previo[t['id']] = {
+                        'estado':              t.get('estado', 'pendiente'),
+                        'completado_por':      t.get('completado_por', ''),
+                        'completado_fecha':    t.get('completado_fecha', ''),
+                        'obs_ejecucion':       t.get('obs_ejecucion', ''),
+                        'trabajos_adicionales':t.get('trabajos_adicionales', ''),
+                        'validado_director':   t.get('validado_director', False),
+                    }
+            if seguimiento_previo:
+                print(f"  → Seguimiento previo encontrado: {len(seguimiento_previo)} trabajo(s) con datos")
+        except Exception as e:
+            print(f"  → Aviso: no se pudo leer seguimiento previo ({e})")
+
     trabajos = []
+    ids_vistos = {}  # para detectar duplicados
+
     for i, row in df.iterrows():
         r = row.to_dict()
+
+        empresa     = ss(r.get('Empresa'))
+        descripcion = ss(r.get('PROYECTO O DESCRIPCIÓN DE LOS TRABAJOS'))
+        subestacion = ss(r.get('S/E'))
+        alimentador = ss(r.get('ALIMENTADOR'))
+        fecha_ini   = fmt_date(r.get('Fecha de Inicio'))
+
+        # Saltar filas vacías
+        if not empresa and not descripcion:
+            continue
+
+        # Generar ID estable
+        tid = generar_id(empresa, descripcion, subestacion, alimentador, fecha_ini or '')
+
+        # Manejar duplicados (muy raro, pero posible)
+        if tid in ids_vistos:
+            tid = tid + str(ids_vistos[tid])
+        ids_vistos[tid] = ids_vistos.get(tid, 0) + 1
+
+        # Recuperar seguimiento previo si existe
+        seg = seguimiento_previo.get(tid, {})
+
         t = {
-            "id":                  i + 1,
-            "empresa":             ss(r.get('Empresa')),
-            "descripcion":         ss(r.get('PROYECTO O DESCRIPCIÓN DE LOS TRABAJOS')),
+            "id":                  tid,
+            "empresa":             empresa,
+            "descripcion":         descripcion,
             "linea_subtransmision":ss(r.get('LINEA DE SUBTRANSMISIÓN')),
-            "subestacion":         ss(r.get('S/E')),
-            "alimentador":         ss(r.get('ALIMENTADOR')),
+            "subestacion":         subestacion,
+            "alimentador":         alimentador,
             "provincia":           ss(r.get('PROVINCIA')),
             "canton":              ss(r.get('CANTON')),
             "codigo_gis":          ss(r.get('CODIGO GIS')),
             "tipo_trabajo":        normalize_tipo(r.get('Desconexiones Programadas')),
             "mw_desconectados":    sf(r.get('MW (Desconectados)')),
-            "fecha_inicio":        fmt_date(r.get('Fecha de Inicio')),
+            "fecha_inicio":        fecha_ini,
             "hora_inicio":         fmt_time(r.get('Hora inicio')),
             "fecha_fin":           fmt_date(r.get('Fecha de Fin')),
             "hora_fin":            fmt_time(r.get('Hora fin')),
@@ -120,45 +210,45 @@ def main():
             "usd_energia":         sf(r.get('USD energia (por desconexión)')),
             "obs_adicionales":     ss(r.get('Unnamed: 22')),
             "es_transelectric":    is_transelectric(r),
-            # Campos de seguimiento (valores iniciales vacíos)
-            "estado":              "pendiente",
-            "completado_por":      "",
-            "completado_fecha":    "",
-            "obs_ejecucion":       "",
-            "trabajos_adicionales":"",
-            "validado_director":   False,
+            # Seguimiento — recuperado del JSON previo o vacío si es nuevo
+            "estado":              seg.get('estado', 'pendiente'),
+            "completado_por":      seg.get('completado_por', ''),
+            "completado_fecha":    seg.get('completado_fecha', ''),
+            "obs_ejecucion":       seg.get('obs_ejecucion', ''),
+            "trabajos_adicionales":seg.get('trabajos_adicionales', ''),
+            "validado_director":   seg.get('validado_director', False),
         }
         trabajos.append(t)
 
-    # Resumen
-    transelectric = [t for t in trabajos if t['es_transelectric']]
+    # ── Resumen ──
+    nuevos = [t for t in trabajos if t['id'] not in seguimiento_previo]
+    trans  = [t for t in trabajos if t['es_transelectric']]
     fechas = sorted([t['fecha_inicio'] for t in trabajos if t['fecha_inicio']])
-
-    print(f"  → Transelectric: {len(transelectric)} trabajos")
-    if fechas:
-        print(f"  → Rango de fechas: {fechas[0]} → {fechas[-1]}")
-
     empresas = sorted(set(t['empresa'] for t in trabajos))
-    print(f"  → Unidades de Negocio ({len(empresas)}): {', '.join(empresas)}")
 
-    # Guardar JSON
+    print(f"\n  → Total trabajos:    {len(trabajos)}")
+    print(f"  → Nuevos (sin seg.): {len(nuevos)}")
+    print(f"  → Transelectric:     {len(trans)}")
+    if fechas:
+        print(f"  → Fechas:            {fechas[0]} → {fechas[-1]}")
+    print(f"  → Unidades ({len(empresas)}):    {', '.join(e.replace('CNEL ','') for e in empresas)}")
+
+    # ── Guardar ──
     output = {
-        "trabajos":  trabajos,
-        "generado":  datetime.now().isoformat(),
-        "fuente":    str(excel_path.name),
+        "trabajos": trabajos,
+        "generado": datetime.now().isoformat(),
+        "fuente":   excel_path.name,
+        "total":    len(trabajos),
     }
-
-    output_path = Path(__file__).parent / 'data.json'
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"\n✓ data.json generado: {len(trabajos)} trabajos → {output_path}")
-    print("\nEstructura del directorio para desplegar en Netlify/GitHub:")
-    print("  /")
-    print("  ├── index.html")
-    print("  └── data.json")
-    print("\nNOTA: Los cambios de seguimiento se guardan en el navegador (localStorage).")
-    print("      Para persistir los datos de seguimiento, use la función de exportación.")
+    print(f"\n✓ data.json actualizado → {output_path}")
+    if seguimiento_previo:
+        recuperados = len([t for t in trabajos if t['id'] in seguimiento_previo])
+        print(f"✓ Seguimiento preservado: {recuperados} trabajo(s) con datos existentes")
+    print(f"\nPróximo paso: GitHub Desktop → Commit → Push")
+    print(f"Netlify se actualizará automáticamente en ~1 minuto.")
 
 if __name__ == '__main__':
     main()
