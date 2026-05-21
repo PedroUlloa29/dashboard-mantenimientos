@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNEL EP — Seguimiento de Mantenimientos Planificados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0f1117;
+    --surface:   #181c26;
+    --surface2:  #1e2330;
+    --border:    #272d3d;
+    --border2:   #313849;
+    --text:      #d4d8e4;
+    --text2:     #7c8499;
+    --text3:     #4a5168;
+    --accent:    #3b7dd8;
+    --accent2:   #2563b8;
+    --gold:      #b8960c;
+    --gold-bg:   #1a1708;
+    --gold-border:#2e2710;
+    --green:     #1e7a45;
+    --green-bg:  #0c1a12;
+    --green-text:#4ade80;
+    --red:       #c0392b;
+    --red-bg:    #1a0d0c;
+    --red-text:  #f87171;
+    --orange:    #c07a20;
+    --orange-bg: #1a1208;
+    --orange-text:#fb923c;
+    --transelectric-accent: #7c5cbf;
+    --transelectric-bg:     #130f1f;
+    --transelectric-border: #2a2040;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── LAYOUT ── */
+  #app { display: flex; flex-direction: column; min-height: 100vh; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: #fff; letter-spacing: -0.5px;
+  }
+  .header-title { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; }
+  .header-sub { font-size: 11px; color: var(--text2); font-weight: 400; margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .badge-period {
+    font-family: var(--mono); font-size: 10px; color: var(--text2);
+    border: 1px solid var(--border2); border-radius: 4px;
+    padding: 3px 8px; letter-spacing: 0.05em;
+  }
+
+  main { flex: 1; padding: 24px 28px; max-width: 1400px; width: 100%; margin: 0 auto; }
+
+  /* ── KPI ROW ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .kpi-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .kpi-value { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--text); line-height: 1; }
+  .kpi-sub { font-size: 10px; color: var(--text2); margin-top: 4px; }
+  .kpi.accent .kpi-value { color: var(--accent); }
+  .kpi.gold .kpi-value { color: #d4a017; }
+
+  /* ── FILTERS ── */
+  .filters {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .filter-group { display: flex; flex-direction: column; gap: 5px; }
+  .filter-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+  select, input[type="date"] {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 5px;
+    color: var(--text);
+    padding: 6px 10px;
+    font-family: var(--sans);
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+    min-width: 160px;
+  }
+  select:focus, input[type="date"]:focus { border-color: var(--accent); }
+  option { background: var(--surface2); }
+
+  .btn {
+    padding: 7px 14px;
+    border-radius: 5px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text2);
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--border2); color: var(--text); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: var(--accent2); }
+  .btn.small { padding: 4px 10px; font-size: 11px; }
+
+  .filter-results {
+    font-size: 11px; color: var(--text2);
+    align-self: center;
+    margin-left: auto;
+  }
+
+  /* ── LEGEND ── */
+  .legend-row {
+    display: flex; gap: 16px; align-items: center;
+    margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--surface2); position: sticky; top: 58px; z-index: 10; }
+  th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  th:hover { color: var(--text2); }
+  th .sort-icon { margin-left: 4px; opacity: 0.4; }
+  th.sorted .sort-icon { opacity: 1; color: var(--accent); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr.transelectric-row { background: var(--transelectric-bg); }
+  tbody tr.transelectric-row:hover { background: #1a1530; }
+
+  td {
+    padding: 11px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    vertical-align: middle;
+  }
+  td.empresa-cell { font-weight: 500; color: var(--text); font-size: 11px; white-space: nowrap; }
+  td.desc-cell {
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+    font-size: 12px;
+  }
+  td.mono { font-family: var(--mono); font-size: 11px; }
+  td.num { font-family: var(--mono); font-size: 11px; text-align: right; }
+
+  /* Status badges */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 100px;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .badge-pendiente { background: var(--surface2); border: 1px solid var(--border2); color: var(--text3); }
+  .badge-completado { background: var(--green-bg); border: 1px solid var(--green); color: var(--green-text); }
+  .badge-en-proceso { background: var(--orange-bg); border: 1px solid var(--orange); color: var(--orange-text); }
+  .badge-validado { background: #0d1a2e; border: 1px solid #1e4080; color: #60a5fa; }
+
+  .badge-tipo-preventivo { background: #0c1a15; border: 1px solid #1a4a2a; color: #4ade80; }
+  .badge-tipo-correctivo { background: var(--red-bg); border: 1px solid var(--red); color: var(--red-text); }
+  .badge-tipo-ingreso { background: #0d1520; border: 1px solid #1a3560; color: #93c5fd; }
+
+  .badge-etapa-se { background: #12101d; border: 1px solid #2a2060; color: #a78bfa; }
+  .badge-etapa-alim { background: #0d1a15; border: 1px solid #1a4530; color: #6ee7b7; }
+  .badge-etapa-lst { background: #1a1208; border: 1px solid #4a3010; color: #fbbf24; }
+
+  .transelectric-tag {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: var(--transelectric-bg);
+    border: 1px solid var(--transelectric-border);
+    color: #a78bfa;
+    padding: 2px 6px; border-radius: 3px;
+    font-size: 9px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    overflow-y: auto;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 100%; max-width: 780px;
+    margin: auto;
+    overflow: hidden;
+    animation: slide-in 0.2s ease;
+  }
+  @keyframes slide-in { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .modal.transelectric-modal { border-color: var(--transelectric-border); }
+
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  }
+  .modal-header.transelectric-header { background: var(--transelectric-bg); border-bottom-color: var(--transelectric-border); }
+
+  .modal-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .modal-id { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+  .modal-empresa { font-size: 12px; font-weight: 600; color: var(--text); }
+  .modal-desc {
+    font-size: 13px; color: var(--text2); margin-top: 6px;
+    line-height: 1.45; max-width: 600px;
+  }
+  .close-btn {
+    background: none; border: none; color: var(--text3);
+    font-size: 20px; cursor: pointer; padding: 2px 6px; border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .close-btn:hover { background: var(--border); color: var(--text); }
+
+  .modal-body { padding: 20px 24px; }
+
+  .modal-section { margin-bottom: 20px; }
+  .modal-section-title {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text3); margin-bottom: 10px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .data-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .data-card-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .data-card-value { font-size: 13px; color: var(--text); font-weight: 500; }
+  .data-card-value.mono { font-family: var(--mono); }
+  .data-card-value.large { font-size: 18px; font-family: var(--mono); }
+  .data-card.highlight { border-color: var(--accent); }
+  .data-card.warning { border-color: var(--gold); background: var(--gold-bg); }
+  .data-card.transelectric { border-color: var(--transelectric-border); background: var(--transelectric-bg); }
+
+  .time-block {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 14px;
+  }
+  .time-arrow { color: var(--text3); font-size: 14px; }
+  .time-date { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+  .time-hour { font-family: var(--mono); font-size: 16px; font-weight: 500; color: var(--text); }
+  .time-label { font-size: 9px; text-transform: uppercase; color: var(--text3); letter-spacing: 0.06em; }
+
+  .justificacion-block {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px 14px;
+    font-size: 12px; color: var(--text2); line-height: 1.55;
+    font-style: italic;
+  }
+
+  /* ── SEGUIMIENTO FORM ── */
+  .seguimiento-form {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .seguimiento-form textarea, .seguimiento-form input[type="text"] {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 5px;
+    color: var(--text);
+    padding: 8px 10px;
+    font-family: var(--sans);
+    font-size: 12px;
+    outline: none;
+    resize: vertical;
+    min-height: 70px;
+  }
+  .seguimiento-form input[type="text"] { min-height: auto; }
+  .seguimiento-form textarea:focus, .seguimiento-form input[type="text"]:focus { border-color: var(--accent); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+  .form-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+
+  .estado-selector { display: flex; gap: 6px; flex-wrap: wrap; }
+  .estado-opt {
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text3);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .estado-opt:hover { border-color: var(--border); color: var(--text2); }
+  .estado-opt.active-pendiente { background: var(--surface2); border-color: var(--border2); color: var(--text2); }
+  .estado-opt.active-en-proceso { background: var(--orange-bg); border-color: var(--orange); color: var(--orange-text); }
+  .estado-opt.active-completado { background: var(--green-bg); border-color: var(--green); color: var(--green-text); }
+
+  .validar-checkbox { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); cursor: pointer; }
+  .validar-checkbox input { width: 14px; height: 14px; cursor: pointer; accent-color: var(--accent); }
+
+  .save-indicator { font-size: 11px; color: var(--green-text); display: none; }
+  .save-indicator.show { display: inline; }
+
+  /* ── TRANSELECTRIC BANNER ── */
+  .transelectric-banner {
+    background: var(--transelectric-bg);
+    border: 1px solid var(--transelectric-border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .transelectric-banner-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .transelectric-banner-text { font-size: 11px; color: #c4b5fd; line-height: 1.5; }
+  .transelectric-banner-text strong { color: #a78bfa; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { text-align: center; padding: 40px; color: var(--text3); }
+  .empty-state-icon { font-size: 32px; margin-bottom: 10px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+  /* ── UN PILLS ── */
+  .un-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+  .un-pill {
+    padding: 2px 8px; border-radius: 3px;
+    font-size: 10px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border2); background: var(--surface2); color: var(--text3);
+    transition: all 0.12s; white-space: nowrap;
+  }
+  .un-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .un-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  @media (max-width: 900px) {
+    main { padding: 14px; }
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .modal-grid, .modal-grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="header-left">
+      <div class="logo-mark">CN</div>
+      <div>
+        <div class="header-title">CNEL EP — Mantenimientos Planificados</div>
+        <div class="header-sub">Dirección de Mantenimiento · Seguimiento y Control</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge-period" id="periodBadge">Cargando...</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- KPIs -->
+    <div class="kpi-row" id="kpiRow">
+      <div class="kpi"><div class="kpi-label">Trabajos Totales</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">planificados</div></div>
+      <div class="kpi accent"><div class="kpi-label">Clientes Afectados</div><div class="kpi-value" id="kpiClientes">—</div><div class="kpi-sub">clientes</div></div>
+      <div class="kpi"><div class="kpi-label">MW Desconectados</div><div class="kpi-value" id="kpiMW">—</div><div class="kpi-sub">MW acumulados</div></div>
+      <div class="kpi gold"><div class="kpi-label">Valoración Total</div><div class="kpi-value" id="kpiValor">—</div><div class="kpi-sub">USD</div></div>
+      <div class="kpi"><div class="kpi-label">Completados</div><div class="kpi-value" id="kpiCompletados">—</div><div class="kpi-sub" id="kpiCompletadosSub">de — trabajos</div></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-group">
+        <span class="filter-label">Unidad de Negocio</span>
+        <div class="un-pills" id="unPills"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Fecha Inicio</span>
+        <input type="date" id="filterDateFrom">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Fecha Fin</span>
+        <input type="date" id="filterDateTo">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Tipo de Trabajo</span>
+        <select id="filterTipo">
+          <option value="">Todos</option>
+          <option value="Trabajos Preventivos">Preventivo</option>
+          <option value="Trabajos Correctivos">Correctivo</option>
+          <option value="Ingreso Nuevas Cargas">Ingreso Cargas</option>
+          <option value="Ingreso nuevas cargas">Ingreso Cargas</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Estado</span>
+        <select id="filterEstado">
+          <option value="">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="en-proceso">En Proceso</option>
+          <option value="completado">Completado</option>
+        </select>
+      </div>
+      <button class="btn" onclick="clearFilters()">Limpiar</button>
+      <span class="filter-results" id="filterResults"></span>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-row">
+      <span style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;">Leyenda:</span>
+      <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div> Preventivo</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div> Correctivo</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#93c5fd"></div> Ingreso Cargas</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Transelectric (no depende de CNEL)</div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table id="mainTable">
+        <thead>
+          <tr>
+            <th onclick="sortBy('id')">#<span class="sort-icon">↕</span></th>
+            <th onclick="sortBy('empresa')">Unidad de Negocio<span class="sort-icon">↕</span></th>
+            <th>Descripción del Trabajo</th>
+            <th onclick="sortBy('etapa')">Etapa<span class="sort-icon">↕</span></th>
+            <th onclick="sortBy('tipo_trabajo')">Tipo<span class="sort-icon">↕</span></th>
+            <th onclick="sortBy('fecha_inicio')">Fecha<span class="sort-icon">↕</span></th>
+            <th onclick="sortBy('clientes_afectados')">Clientes<span class="sort-icon">↕</span></th>
+            <th onclick="sortBy('mw_desconectados')">MW<span class="sort-icon">↕</span></th>
+            <th onclick="sortBy('estado')">Estado<span class="sort-icon">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-state-icon">🔍</div>
+        <div>No se encontraron trabajos con los filtros aplicados</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header" id="modalHeader">
+      <div style="flex:1">
+        <div class="modal-title-row">
+          <span class="modal-id" id="mId"></span>
+          <span class="modal-empresa" id="mEmpresa"></span>
+          <span id="mTranselectricTag"></span>
+          <span id="mTipoBadge"></span>
+          <span id="mEtapaBadge"></span>
+        </div>
+        <div class="modal-desc" id="mDesc"></div>
+      </div>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ── DATA & STATE ──
+let ALL_DATA = [];
+let filteredData = [];
+let sortField = 'fecha_inicio';
+let sortDir = 1;
+let selectedUN = null;
+let currentTrabajoId = null;
+
+// ── LOAD DATA ──
+async function loadData() {
+  try {
+    const resp = await fetch('data.json');
+    if (!resp.ok) throw new Error('No se pudo cargar data.json');
+    const json = await resp.json();
+    ALL_DATA = json.trabajos;
+    // Merge with localStorage
+    const saved = JSON.parse(localStorage.getItem('cnel_seguimiento') || '{}');
+    ALL_DATA.forEach(t => {
+      if (saved[t.id]) {
+        Object.assign(t, saved[t.id]);
+      }
+    });
+    init();
+  } catch(e) {
+    document.getElementById('tableBody').innerHTML = `<tr><td colspan="9" style="padding:40px;text-align:center;color:var(--red-text)">
+      Error: ${e.message}<br><small style="color:var(--text3);margin-top:6px;display:block">Asegúrese de que data.json esté en el mismo directorio que index.html</small>
+    </td></tr>`;
+  }
+}
+
+function saveToLocal(id, fields) {
+  const saved = JSON.parse(localStorage.getItem('cnel_seguimiento') || '{}');
+  saved[id] = { ...saved[id], ...fields };
+  localStorage.setItem('cnel_seguimiento', JSON.stringify(saved));
+}
+
+// ── INIT ──
+function init() {
+  buildUNPills();
+  setDateRange();
+  applyFilters();
+  updatePeriodBadge();
+}
+
+function updatePeriodBadge() {
+  const fechas = ALL_DATA.map(t => t.fecha_inicio).filter(Boolean).sort();
+  if (fechas.length) {
+    const from = formatDateDisplay(fechas[0]);
+    const to = formatDateDisplay(fechas[fechas.length - 1]);
+    document.getElementById('periodBadge').textContent = `${from} → ${to}`;
+  }
+}
+
+function buildUNPills() {
+  const empresas = [...new Set(ALL_DATA.map(t => t.empresa))].sort();
+  const container = document.getElementById('unPills');
+  empresas.forEach(un => {
+    const pill = document.createElement('span');
+    pill.className = 'un-pill';
+    pill.textContent = un.replace('CNEL ', '');
+    pill.dataset.value = un;
+    pill.onclick = () => toggleUN(un, pill);
+    container.appendChild(pill);
+  });
+}
+
+function toggleUN(un, pill) {
+  if (selectedUN === un) {
+    selectedUN = null;
+    pill.classList.remove('active');
+  } else {
+    document.querySelectorAll('.un-pill').forEach(p => p.classList.remove('active'));
+    selectedUN = un;
+    pill.classList.add('active');
+  }
+  applyFilters();
+}
+
+function setDateRange() {
+  const fechas = ALL_DATA.map(t => t.fecha_inicio).filter(Boolean).sort();
+  if (fechas.length) {
+    document.getElementById('filterDateFrom').value = fechas[0];
+    document.getElementById('filterDateTo').value = fechas[fechas.length - 1];
+  }
+}
+
+function clearFilters() {
+  selectedUN = null;
+  document.querySelectorAll('.un-pill').forEach(p => p.classList.remove('active'));
+  document.getElementById('filterTipo').value = '';
+  document.getElementById('filterEstado').value = '';
+  setDateRange();
+  applyFilters();
+}
+
+// ── FILTER + SORT ──
+function applyFilters() {
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
+  const tipo = document.getElementById('filterTipo').value;
+  const estado = document.getElementById('filterEstado').value;
+
+  filteredData = ALL_DATA.filter(t => {
+    if (selectedUN && t.empresa !== selectedUN) return false;
+    if (dateFrom && t.fecha_inicio && t.fecha_inicio < dateFrom) return false;
+    if (dateTo && t.fecha_inicio && t.fecha_inicio > dateTo) return false;
+    if (tipo && t.tipo_trabajo !== tipo) return false;
+    if (estado && t.estado !== estado) return false;
+    return true;
+  });
+
+  sortData();
+  renderTable();
+  updateKPIs();
+}
+
+['filterDateFrom','filterDateTo','filterTipo','filterEstado'].forEach(id => {
+  document.getElementById(id).addEventListener('change', applyFilters);
+});
+
+function sortBy(field) {
+  if (sortField === field) sortDir *= -1;
+  else { sortField = field; sortDir = 1; }
+  document.querySelectorAll('th').forEach(th => th.classList.remove('sorted'));
+  sortData();
+  renderTable();
+}
+
+function sortData() {
+  filteredData.sort((a, b) => {
+    let va = a[sortField] ?? '';
+    let vb = b[sortField] ?? '';
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+}
+
+// ── RENDER TABLE ──
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (!filteredData.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    document.getElementById('filterResults').textContent = '0 trabajos';
+    return;
+  }
+  empty.style.display = 'none';
+  document.getElementById('filterResults').textContent = `${filteredData.length} trabajo${filteredData.length !== 1 ? 's' : ''}`;
+
+  tbody.innerHTML = filteredData.map(t => {
+    const trClass = t.es_transelectric ? ' class="transelectric-row"' : '';
+    const transTag = t.es_transelectric ? `<span class="transelectric-tag">⚡ TRANSELECTRIC</span>` : '';
+    const tipoBadge = tipoBadgeHTML(t.tipo_trabajo);
+    const etapaBadge = etapaBadgeHTML(t.etapa);
+    const estadoBadge = estadoBadgeHTML(t.estado, t.validado_director);
+    const fechaStr = t.fecha_inicio ? formatDateDisplay(t.fecha_inicio) : '—';
+    const horaStr = t.hora_inicio && t.hora_fin ? `${t.hora_inicio}–${t.hora_fin}` : t.hora_inicio || '';
+    const clientes = t.clientes_afectados ? t.clientes_afectados.toLocaleString('es-EC') : '—';
+    const mw = t.mw_desconectados ? t.mw_desconectados.toFixed(2) : '—';
+
+    return `<tr${trClass} onclick="openModal(${t.id})">
+      <td class="mono">${t.id}</td>
+      <td class="empresa-cell">${t.empresa.replace('CNEL ','')}</td>
+      <td class="desc-cell">${escH(t.descripcion)} ${transTag}</td>
+      <td>${etapaBadge}</td>
+      <td>${tipoBadge}</td>
+      <td class="mono" style="white-space:nowrap">
+        <div>${fechaStr}</div>
+        ${horaStr ? `<div style="font-size:10px;color:var(--text3);margin-top:1px">${horaStr}</div>` : ''}
+      </td>
+      <td class="num">${clientes}</td>
+      <td class="num">${mw}</td>
+      <td>${estadoBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── KPIs ──
+function updateKPIs() {
+  const total = filteredData.length;
+  const clientes = filteredData.reduce((s, t) => s + (t.clientes_afectados || 0), 0);
+  const mw = filteredData.reduce((s, t) => s + (t.mw_desconectados || 0), 0);
+  const valor = filteredData.reduce((s, t) => s + (t.valoracion || 0), 0);
+  const completados = filteredData.filter(t => t.estado === 'completado').length;
+
+  document.getElementById('kpiTotal').textContent = total;
+  document.getElementById('kpiClientes').textContent = clientes.toLocaleString('es-EC');
+  document.getElementById('kpiMW').textContent = mw.toFixed(1);
+  document.getElementById('kpiValor').textContent = '$' + Math.round(valor).toLocaleString('es-EC');
+  document.getElementById('kpiCompletados').textContent = completados;
+  document.getElementById('kpiCompletadosSub').textContent = `de ${total} trabajos`;
+}
+
+// ── MODAL ──
+function openModal(id) {
+  const t = ALL_DATA.find(x => x.id === id);
+  if (!t) return;
+  currentTrabajoId = id;
+
+  const header = document.getElementById('modalHeader');
+  const modal = document.getElementById('modal');
+
+  if (t.es_transelectric) {
+    header.classList.add('transelectric-header');
+    modal.classList.add('transelectric-modal');
+  } else {
+    header.classList.remove('transelectric-header');
+    modal.classList.remove('transelectric-modal');
+  }
+
+  document.getElementById('mId').textContent = `#${t.id}`;
+  document.getElementById('mEmpresa').textContent = t.empresa;
+  document.getElementById('mTranselectricTag').innerHTML = t.es_transelectric ? `<span class="transelectric-tag">⚡ TRANSELECTRIC</span>` : '';
+  document.getElementById('mTipoBadge').innerHTML = tipoBadgeHTML(t.tipo_trabajo);
+  document.getElementById('mEtapaBadge').innerHTML = etapaBadgeHTML(t.etapa);
+  document.getElementById('mDesc').textContent = t.descripcion;
+
+  const body = document.getElementById('modalBody');
+  body.innerHTML = buildModalBody(t);
+
+  // Bind estado selector
+  document.querySelectorAll('.estado-opt').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.estado-opt').forEach(b => b.className = 'estado-opt');
+      btn.classList.add(`active-${btn.dataset.estado}`);
+    };
+  });
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buildModalBody(t) {
+  const transBanner = t.es_transelectric ? `
+    <div class="transelectric-banner">
+      <div class="transelectric-banner-icon">⚡</div>
+      <div class="transelectric-banner-text">
+        <strong>Trabajo coordinado con Transelectric / CENACE.</strong><br>
+        Este mantenimiento es realizado por el transmisor y no depende directamente de CNEL EP. 
+        El horario fue definido por Transelectric y aceptado por CENACE. 
+        CNEL EP realiza el seguimiento y gestión de impacto en sus subestaciones.
+      </div>
+    </div>` : '';
+
+  const fechaInicio = t.fecha_inicio ? formatDateDisplay(t.fecha_inicio) : '—';
+  const fechaFin = t.fecha_fin ? formatDateDisplay(t.fecha_fin) : fechaInicio;
+
+  const location = [t.subestacion, t.alimentador, t.linea_subtransmision].filter(Boolean).join(' / ') || '—';
+  const geoLocation = [t.canton, t.provincia].filter(Boolean).join(', ') || '—';
+
+  const justBlock = t.justificacion ? `
+    <div class="modal-section">
+      <div class="modal-section-title">Justificación del Horario</div>
+      <div class="justificacion-block">"${escH(t.justificacion)}"</div>
+    </div>` : '';
+
+  const obsBlock = t.obs_adicionales ? `
+    <div class="modal-section">
+      <div class="modal-section-title">Observaciones del Planificador</div>
+      <div class="justificacion-block">${escH(t.obs_adicionales)}</div>
+    </div>` : '';
+
+  const estadoActivo = t.estado || 'pendiente';
+  const validadoChecked = t.validado_director ? 'checked' : '';
+
+  return `
+    ${transBanner}
+
+    <div class="modal-section">
+      <div class="modal-section-title">Ubicación y Clasificación</div>
+      <div class="modal-grid-3">
+        <div class="data-card">
+          <div class="data-card-label">Infraestructura</div>
+          <div class="data-card-value">${escH(location)}</div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">Ubicación Geográfica</div>
+          <div class="data-card-value">${escH(geoLocation)}</div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">Código GIS</div>
+          <div class="data-card-value mono">${t.codigo_gis || '—'}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Ventana de Ejecución</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div class="time-block" style="flex:1;min-width:200px">
+          <div>
+            <div class="time-label">Inicio</div>
+            <div class="time-date">${fechaInicio}</div>
+            <div class="time-hour">${t.hora_inicio || '—'}</div>
+          </div>
+          <div class="time-arrow">→</div>
+          <div>
+            <div class="time-label">Fin</div>
+            <div class="time-date">${fechaFin}</div>
+            <div class="time-hour">${t.hora_fin || '—'}</div>
+          </div>
+        </div>
+        <div class="data-card" style="flex:0 0 120px">
+          <div class="data-card-label">MW Desconectados</div>
+          <div class="data-card-value large">${t.mw_desconectados.toFixed(2)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Impacto en Usuarios</div>
+      <div class="modal-grid">
+        <div class="data-card highlight">
+          <div class="data-card-label">Clientes Afectados</div>
+          <div class="data-card-value large">${(t.clientes_afectados || 0).toLocaleString('es-EC')}</div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">Clientes Totales S/E</div>
+          <div class="data-card-value large">${(t.clientes_totales || 0).toLocaleString('es-EC')}</div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">Energía No Suministrada</div>
+          <div class="data-card-value mono">${(t.energia_kwh || 0).toLocaleString('es-EC')} kWh</div>
+        </div>
+        <div class="data-card ${t.usd_energia > 5000 ? 'warning' : ''}">
+          <div class="data-card-label">USD Energía Afectada</div>
+          <div class="data-card-value mono">$${(t.usd_energia || 0).toLocaleString('es-EC', {minimumFractionDigits:2})}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Valoración Económica</div>
+      <div class="modal-grid">
+        <div class="data-card">
+          <div class="data-card-label">Valoración del Trabajo (mat. + m.o.)</div>
+          <div class="data-card-value mono">$${t.valoracion.toLocaleString('es-EC', {minimumFractionDigits:2})}</div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">Presupuesto Requerido</div>
+          <div class="data-card-value mono">${t.presupuesto ? '$'+t.presupuesto.toLocaleString('es-EC',{minimumFractionDigits:2}) : 'No especificado'}</div>
+        </div>
+      </div>
+    </div>
+
+    ${justBlock}
+    ${obsBlock}
+
+    <!-- SEGUIMIENTO -->
+    <div class="modal-section">
+      <div class="modal-section-title">📋 Registro de Seguimiento — Dirección de Mantenimiento</div>
+      <div class="seguimiento-form">
+        <div style="margin-bottom:12px">
+          <div class="form-group">
+            <label>Estado del Trabajo</label>
+            <div class="estado-selector">
+              <span class="estado-opt ${estadoActivo === 'pendiente' ? 'active-pendiente' : ''}" data-estado="pendiente">⏳ Pendiente</span>
+              <span class="estado-opt ${estadoActivo === 'en-proceso' ? 'active-en-proceso' : ''}" data-estado="en-proceso">🔧 En Proceso</span>
+              <span class="estado-opt ${estadoActivo === 'completado' ? 'active-completado' : ''}" data-estado="completado">✅ Completado</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ejecutado por (líder / técnico responsable)</label>
+            <input type="text" id="inputCompletadoPor" placeholder="Nombre del responsable..." value="${escH(t.completado_por)}">
+          </div>
+          <div class="form-group">
+            <label>Fecha y hora de finalización</label>
+            <input type="text" id="inputCompletadoFecha" placeholder="Ej: 30/05/2026 04:15" value="${escH(t.completado_fecha)}">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label>Observaciones de ejecución (para el Ministerio)</label>
+          <textarea id="inputObsEjecucion" placeholder="Describa cómo se ejecutó el trabajo, novedades, condiciones encontradas...">${escH(t.obs_ejecucion)}</textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>Trabajos adicionales realizados (no planificados)</label>
+          <textarea id="inputTrabajosAdd" placeholder="Indique si se realizaron trabajos adicionales al alcance original..." style="min-height:55px">${escH(t.trabajos_adicionales)}</textarea>
+        </div>
+        <div class="form-actions">
+          <label class="validar-checkbox">
+            <input type="checkbox" id="chkValidado" ${validadoChecked}>
+            <span>Validado por Director de Mantenimiento</span>
+          </label>
+          <button class="btn primary" onclick="guardarSeguimiento(${t.id})">Guardar Registro</button>
+          <span class="save-indicator" id="saveIndicator">✓ Guardado</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function guardarSeguimiento(id) {
+  const estadoSelected = document.querySelector('.estado-opt[class*="active-"]');
+  const estado = estadoSelected ? estadoSelected.dataset.estado : 'pendiente';
+  const completado_por = document.getElementById('inputCompletadoPor').value;
+  const completado_fecha = document.getElementById('inputCompletadoFecha').value;
+  const obs_ejecucion = document.getElementById('inputObsEjecucion').value;
+  const trabajos_adicionales = document.getElementById('inputTrabajosAdd').value;
+  const validado_director = document.getElementById('chkValidado').checked;
+
+  const updates = { estado, completado_por, completado_fecha, obs_ejecucion, trabajos_adicionales, validado_director };
+
+  const idx = ALL_DATA.findIndex(t => t.id === id);
+  if (idx !== -1) Object.assign(ALL_DATA[idx], updates);
+
+  saveToLocal(id, updates);
+
+  const indicator = document.getElementById('saveIndicator');
+  indicator.classList.add('show');
+  setTimeout(() => indicator.classList.remove('show'), 2500);
+
+  applyFilters();
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentTrabajoId = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── BADGES ──
+function tipoBadgeHTML(tipo) {
+  const t = (tipo || '').toLowerCase();
+  if (t.includes('preventiv')) return `<span class="badge badge-tipo-preventivo">Preventivo</span>`;
+  if (t.includes('correctiv')) return `<span class="badge badge-tipo-correctivo">Correctivo</span>`;
+  if (t.includes('ingreso') || t.includes('carga')) return `<span class="badge badge-tipo-ingreso">Ingreso Cargas</span>`;
+  return `<span class="badge badge-pendiente">${tipo || '—'}</span>`;
+}
+
+function etapaBadgeHTML(etapa) {
+  const e = (etapa || '').toLowerCase();
+  if (e.includes('subest')) return `<span class="badge badge-etapa-se">S/E</span>`;
+  if (e.includes('aliment')) return `<span class="badge badge-etapa-alim">ALIM</span>`;
+  if (e === 'lst') return `<span class="badge badge-etapa-lst">LST</span>`;
+  return `<span class="badge badge-pendiente">${etapa || '—'}</span>`;
+}
+
+function estadoBadgeHTML(estado, validado) {
+  if (validado) return `<span class="badge badge-validado">✓ Validado</span>`;
+  if (estado === 'completado') return `<span class="badge badge-completado">✅ Completado</span>`;
+  if (estado === 'en-proceso') return `<span class="badge badge-en-proceso">🔧 En Proceso</span>`;
+  return `<span class="badge badge-pendiente">⏳ Pendiente</span>`;
+}
+
+// ── UTILS ──
+function formatDateDisplay(dateStr) {
+  if (!dateStr) return '—';
+  const [y, m, d] = dateStr.split('-');
+  const months = ['','ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return `${parseInt(d)} ${months[parseInt(m)]} ${y}`;
+}
+
+function escH(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── START ──
+loadData();
+</script>
+</body>
+</html>
