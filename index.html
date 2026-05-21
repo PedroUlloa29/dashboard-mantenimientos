@@ -730,49 +730,262 @@ function exportarExcel(scope){
   const data = scope==='unit' ? filteredUnit : filteredAll;
   if(!data.length){alert('No hay datos para exportar con los filtros actuales.');return;}
 
-  const cols=[
-    'ID','Empresa','Descripción','Línea Subtransmisión','Subestación','Alimentador',
-    'Provincia','Cantón','Código GIS','Tipo de Trabajo','Etapa Funcional',
+  // Load SheetJS dynamically if not yet loaded
+  if(typeof XLSX === 'undefined'){
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    script.onload=()=>_doExport(scope,data);
+    script.onerror=()=>alert('No se pudo cargar la librería de Excel. Verifique su conexión a internet.');
+    document.head.appendChild(script);
+  } else {
+    _doExport(scope,data);
+  }
+}
+
+function _doExport(scope, data){
+  const wb = XLSX.utils.book_new();
+
+  // ── HOJA 1: DATOS PLANIFICADOS ──
+  const colsPlan = [
+    'N°','Unidad de Negocio','Descripción del Trabajo',
+    'Subestación / Alimentador / LST','Provincia','Cantón','Código GIS',
+    'Tipo de Trabajo','Etapa Funcional','Transelectric',
     'Fecha Inicio','Hora Inicio','Fecha Fin','Hora Fin',
     'MW Desconectados','Clientes Afectados','Clientes Totales',
-    'Energía kWh','USD Energía','Valoración USD','Presupuesto USD',
-    'Justificación Horario','Observaciones Planificador','Es Transelectric',
-    '--- SEGUIMIENTO ---',
-    'Estado','Ejecutado Por','Fecha Hora Finalización',
-    'Observaciones Ejecución','Trabajos Adicionales','Validado Director'
+    'Energía No Suministrada (kWh)','Impacto Económico ENS (USD)',
+    'Valoración del Trabajo (USD)','Presupuesto Requerido (USD)',
+    'Justificación del Horario','Observaciones del Planificador'
   ];
 
-  const rows=data.map(t=>[
-    t.id, t.empresa, t.descripcion, t.linea_subtransmision, t.subestacion,
-    t.alimentador, t.provincia, t.canton, t.codigo_gis, t.tipo_trabajo, t.etapa,
-    t.fecha_inicio||'', t.hora_inicio||'', t.fecha_fin||'', t.hora_fin||'',
-    t.mw_desconectados, t.clientes_afectados, t.clientes_totales,
-    t.energia_kwh, t.usd_energia, t.valoracion, t.presupuesto,
-    t.justificacion, t.obs_adicionales, t.es_transelectric?'SÍ':'NO',
-    '---',
-    t.estado||'pendiente', t.completado_por||'', t.completado_fecha||'',
-    t.obs_ejecucion||'', t.trabajos_adicionales||'',
-    t.validado_director?'SÍ':'NO'
+  const rowsPlan = data.map(t => {
+    const loc = [t.subestacion,t.alimentador,t.linea_subtransmision].filter(Boolean).join(' / ') || '—';
+    return [
+      t.id, t.empresa,
+      t.descripcion,
+      loc,
+      t.provincia||'', t.canton||'', t.codigo_gis||'',
+      t.tipo_trabajo||'', t.etapa||'',
+      t.es_transelectric ? 'SÍ — Transelectric/CENACE' : 'NO',
+      t.fecha_inicio||'', t.hora_inicio||'', t.fecha_fin||'', t.hora_fin||'',
+      t.mw_desconectados||0,
+      t.clientes_afectados||0,
+      t.clientes_totales||0,
+      t.energia_kwh||0,
+      t.usd_energia||0,
+      t.valoracion||0,
+      t.presupuesto||0,
+      t.justificacion||'',
+      t.obs_adicionales||''
+    ];
+  });
+
+  const wsPlan = XLSX.utils.aoa_to_sheet([colsPlan, ...rowsPlan]);
+
+  // Column widths for sheet 1
+  wsPlan['!cols'] = [
+    {wch:5},{wch:22},{wch:60},{wch:35},{wch:14},{wch:22},{wch:14},
+    {wch:20},{wch:12},{wch:28},
+    {wch:13},{wch:10},{wch:13},{wch:10},
+    {wch:16},{wch:18},{wch:16},
+    {wch:24},{wch:24},
+    {wch:22},{wch:22},
+    {wch:55},{wch:40}
+  ];
+
+  // Style header row (blue background, white bold text)
+  const rangeP = XLSX.utils.decode_range(wsPlan['!ref']);
+  for(let C=rangeP.s.c; C<=rangeP.e.c; C++){
+    const addr = XLSX.utils.encode_cell({r:0, c:C});
+    if(!wsPlan[addr]) continue;
+    wsPlan[addr].s = {
+      fill:{fgColor:{rgb:'1A56C4'}},
+      font:{bold:true, color:{rgb:'FFFFFF'}, sz:10},
+      alignment:{horizontal:'center', vertical:'center', wrapText:true},
+      border:{bottom:{style:'medium',color:{rgb:'FFFFFF'}}}
+    };
+  }
+
+  // Style data rows — alternate banding + Transelectric highlight
+  for(let R=1; R<=rowsPlan.length; R++){
+    const t = data[R-1];
+    const isTrans = t.es_transelectric;
+    for(let C=rangeP.s.c; C<=rangeP.e.c; C++){
+      const addr = XLSX.utils.encode_cell({r:R, c:C});
+      if(!wsPlan[addr]) wsPlan[addr]={t:'s', v:''};
+      const isAlt = R % 2 === 0;
+      let bg = isAlt ? 'F0F4FA' : 'FFFFFF';
+      if(isTrans) bg = 'F5F0FF';
+      wsPlan[addr].s = {
+        fill:{fgColor:{rgb:bg}},
+        font:{sz:10, color:{rgb: isTrans?'4C1D95':'18202E'}},
+        alignment:{vertical:'top', wrapText: C===2 || C===21 || C===22},
+        border:{
+          bottom:{style:'thin',color:{rgb:'DDE1EA'}},
+          right:{style:'thin',color:{rgb:'DDE1EA'}}
+        }
+      };
+    }
+  }
+
+  // Freeze top row
+  wsPlan['!freeze'] = {xSplit:0, ySplit:1};
+
+  // ── HOJA 2: SEGUIMIENTO ──
+  const colsSeg = [
+    'N°','Unidad de Negocio','Descripción del Trabajo',
+    'Fecha Planificada','Hora Inicio','Hora Fin',
+    'Tipo de Trabajo','Etapa','Clientes Afectados','MW',
+    '── SEGUIMIENTO ──',
+    'Estado','Ejecutado Por','Fecha y Hora de Finalización',
+    'Observaciones de Ejecución (Ministerio)','Trabajos Adicionales Realizados',
+    'Validado por Director'
+  ];
+
+  const rowsSeg = data.map(t => [
+    t.id, t.empresa,
+    t.descripcion,
+    t.fecha_inicio||'', t.hora_inicio||'', t.hora_fin||'',
+    t.tipo_trabajo||'', t.etapa||'',
+    t.clientes_afectados||0,
+    t.mw_desconectados||0,
+    '──────────',
+    (t.estado||'pendiente').toUpperCase(),
+    t.completado_por||'',
+    t.completado_fecha||'',
+    t.obs_ejecucion||'',
+    t.trabajos_adicionales||'',
+    t.validado_director ? 'SÍ ✓' : 'NO'
   ]);
 
-  // Build CSV with BOM for Excel Spanish
-  const BOM='\uFEFF';
-  const csvRows=[cols,...rows].map(row=>
-    row.map(cell=>{
-      const s=String(cell==null?'':cell);
-      return s.includes(',')||s.includes('"')||s.includes('\n') ? `"${s.replace(/"/g,'""')}"` : s;
-    }).join(',')
-  );
-  const csv=BOM+csvRows.join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  const fecha=new Date().toISOString().split('T')[0];
-  const nombre=scope==='unit'?currentUN.replace('CNEL ','CNEL_'):'TODAS_UNIDADES';
-  a.href=url;
-  a.download=`CNEL_EP_Mantenimientos_${nombre}_${fecha}.csv`;
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
+  const wsSeg = XLSX.utils.aoa_to_sheet([colsSeg, ...rowsSeg]);
+
+  wsSeg['!cols'] = [
+    {wch:5},{wch:22},{wch:55},
+    {wch:14},{wch:10},{wch:10},
+    {wch:20},{wch:12},{wch:18},{wch:10},
+    {wch:14},
+    {wch:16},{wch:28},{wch:24},
+    {wch:55},{wch:45},
+    {wch:20}
+  ];
+
+  const rangeS = XLSX.utils.decode_range(wsSeg['!ref']);
+
+  // Headers — two color zones
+  const planCols = 9; // columns before seguimiento divider
+  for(let C=rangeS.s.c; C<=rangeS.e.c; C++){
+    const addr = XLSX.utils.encode_cell({r:0, c:C});
+    if(!wsSeg[addr]) continue;
+    const isSegCol = C >= 10;
+    wsSeg[addr].s = {
+      fill:{fgColor:{rgb: isSegCol ? '166534' : '1A56C4'}},
+      font:{bold:true, color:{rgb:'FFFFFF'}, sz:10},
+      alignment:{horizontal:'center', vertical:'center', wrapText:true}
+    };
+  }
+
+  // Data rows
+  for(let R=1; R<=rowsSeg.length; R++){
+    const t = data[R-1];
+    const comp = (t.estado||'pendiente') === 'completado';
+    const proc = (t.estado||'pendiente') === 'en-proceso';
+    for(let C=rangeS.s.c; C<=rangeS.e.c; C++){
+      const addr = XLSX.utils.encode_cell({r:R, c:C});
+      if(!wsSeg[addr]) wsSeg[addr]={t:'s', v:''};
+      const isAlt = R % 2 === 0;
+      let bg = isAlt ? 'F0F4FA' : 'FFFFFF';
+      if(C >= 11){ // seguimiento columns
+        if(comp) bg = 'F0FDF4';
+        else if(proc) bg = 'FFFBEB';
+        else bg = isAlt ? 'F8F8F8' : 'FFFFFF';
+      }
+      let fontColor = '18202E';
+      if(C===11){ // Estado column
+        if(comp) fontColor='166534';
+        else if(proc) fontColor='92400E';
+        else fontColor='8E97B4';
+      }
+      wsSeg[addr].s = {
+        fill:{fgColor:{rgb:bg}},
+        font:{sz:10, color:{rgb:fontColor}, bold: C===11},
+        alignment:{vertical:'top', wrapText: C===2 || C>=14},
+        border:{
+          bottom:{style:'thin',color:{rgb:'DDE1EA'}},
+          right:{style:'thin',color:{rgb:'DDE1EA'}}
+        }
+      };
+    }
+  }
+
+  wsSeg['!freeze'] = {xSplit:0, ySplit:1};
+
+  // ── HOJA 3: RESUMEN ──
+  const empresas = [...new Set(data.map(t=>t.empresa))].sort();
+  const resRows = [
+    ['CNEL EP — RESUMEN DE MANTENIMIENTOS PLANIFICADOS','','','','','',''],
+    ['Generado el: '+new Date().toLocaleString('es-EC'),'','','','','',''],
+    ['','','','','','',''],
+    ['UNIDAD DE NEGOCIO','TOTAL','PREVENTIVOS','CORRECTIVOS','ING. CARGAS','TRANSELECTRIC','COMPLETADOS'],
+  ];
+  empresas.forEach(un=>{
+    const ts = data.filter(t=>t.empresa===un);
+    resRows.push([
+      un,
+      ts.length,
+      ts.filter(t=>t.tipo_trabajo.toLowerCase().includes('prevent')).length,
+      ts.filter(t=>t.tipo_trabajo.toLowerCase().includes('correct')).length,
+      ts.filter(t=>t.tipo_trabajo.toLowerCase().includes('ingreso')||t.tipo_trabajo.toLowerCase().includes('carga')).length,
+      ts.filter(t=>t.es_transelectric).length,
+      ts.filter(t=>t.estado==='completado').length,
+    ]);
+  });
+  resRows.push(['','','','','','','']);
+  resRows.push([
+    'TOTAL GENERAL',
+    data.length,
+    data.filter(t=>t.tipo_trabajo.toLowerCase().includes('prevent')).length,
+    data.filter(t=>t.tipo_trabajo.toLowerCase().includes('correct')).length,
+    data.filter(t=>t.tipo_trabajo.toLowerCase().includes('ingreso')||t.tipo_trabajo.toLowerCase().includes('carga')).length,
+    data.filter(t=>t.es_transelectric).length,
+    data.filter(t=>t.estado==='completado').length,
+  ]);
+  resRows.push(['','','','','','','']);
+  resRows.push(['INDICADORES GENERALES','','','','','','']);
+  resRows.push(['Total Clientes Afectados',data.reduce((s,t)=>s+(t.clientes_afectados||0),0),'','','','','']);
+  resRows.push(['Total MW Desconectados',data.reduce((s,t)=>s+(t.mw_desconectados||0),0).toFixed(2),'','','','','']);
+  resRows.push(['Energía No Suministrada (kWh)',data.reduce((s,t)=>s+(t.energia_kwh||0),0).toLocaleString('es-EC'),'','','','','']);
+  resRows.push(['Valoración Total Trabajos (USD)','$'+Math.round(data.reduce((s,t)=>s+(t.valoracion||0),0)).toLocaleString('es-EC'),'','','','','']);
+
+  const wsRes = XLSX.utils.aoa_to_sheet(resRows);
+  wsRes['!cols']=[{wch:35},{wch:12},{wch:14},{wch:14},{wch:14},{wch:16},{wch:14}];
+
+  // Style title
+  if(wsRes['A1']) wsRes['A1'].s={font:{bold:true,sz:14,color:{rgb:'1A56C4'}},alignment:{horizontal:'left'}};
+  if(wsRes['A2']) wsRes['A2'].s={font:{sz:10,color:{rgb:'8E97B4'}},alignment:{horizontal:'left'}};
+
+  // Style table header (row 4)
+  ['A4','B4','C4','D4','E4','F4','G4'].forEach(addr=>{
+    if(!wsRes[addr]) return;
+    wsRes[addr].s={fill:{fgColor:{rgb:'1A56C4'}},font:{bold:true,color:{rgb:'FFFFFF'},sz:10},alignment:{horizontal:'center'}};
+  });
+
+  // Style totals row
+  const totalRow = resRows.length - 8; // "TOTAL GENERAL" row index
+  ['A','B','C','D','E','F','G'].forEach(col=>{
+    const addr=col+(totalRow+1);
+    if(!wsRes[addr]) return;
+    wsRes[addr].s={fill:{fgColor:{rgb:'1A56C4'}},font:{bold:true,color:{rgb:'FFFFFF'},sz:10}};
+  });
+
+  // Add sheets
+  XLSX.utils.book_append_sheet(wb, wsRes, '1. Resumen');
+  XLSX.utils.book_append_sheet(wb, wsSeg, '2. Seguimiento');
+  XLSX.utils.book_append_sheet(wb, wsPlan, '3. Datos Planificados');
+
+  // Download
+  const fecha = new Date().toISOString().split('T')[0];
+  const nombre = scope==='unit' ? currentUN.replace(/\s+/g,'_') : 'TODAS_UNIDADES';
+  XLSX.writeFile(wb, `CNEL_EP_Mantenimientos_${nombre}_${fecha}.xlsx`);
 }
 
 /* ─── MODAL ─── */
