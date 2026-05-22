@@ -108,7 +108,7 @@ main{padding:24px 28px;max-width:1440px;width:100%;margin:0 auto}
   padding:18px 22px;margin-bottom:18px;display:flex;align-items:center;
   justify-content:space-between;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
 .unit-name{font-size:20px;font-weight:700;color:var(--text)}
-.unit-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.unit-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
 
 .filters{background:var(--surface);border:1px solid var(--border);border-radius:8px;
   padding:12px 16px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;
@@ -231,6 +231,26 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
 .saved-ind.show{display:inline}
 .empty-state{text-align:center;padding:48px;color:var(--text3)}
 
+/* MW FILTER BUTTONS */
+.mw-filter-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:12px 18px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  flex-wrap:wrap;
+}
+.mw-filter-label{font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--text3);margin-right:4px}
+.mw-btn{
+  padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;
+  cursor:pointer;border:2px solid var(--border2);background:var(--surface2);
+  color:var(--text2);transition:all .15s;white-space:nowrap;
+}
+.mw-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.mw-btn.active-all{background:var(--accent);border-color:var(--accent);color:#fff}
+.mw-btn.active-gte{background:#166534;border-color:#166534;color:#fff}
+.mw-btn.active-lt{background:#1a56c4;border-color:#1a56c4;color:#fff}
+.mw-count{font-size:11px;color:var(--text3);margin-left:8px}
+
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
@@ -264,6 +284,13 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
 <main>
   <!-- VISTA INICIO -->
   <div id="homeView">
+    <div class="mw-filter-bar">
+      <span class="mw-filter-label">Mostrar trabajos:</span>
+      <button class="mw-btn active-all" id="mwBtnAll"  onclick="setMwFilter('all')">⚡ Todos</button>
+      <button class="mw-btn"            id="mwBtnGte"  onclick="setMwFilter('gte')">≥ 2 MW</button>
+      <button class="mw-btn"            id="mwBtnLt"   onclick="setMwFilter('lt')">&#60; 2 MW</button>
+      <span class="mw-count" id="mwCount"></span>
+    </div>
     <div class="global-kpis" id="globalKpis"></div>
     <div class="section-header">
       <div class="section-title">Unidades de Negocio</div>
@@ -435,7 +462,7 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
 </div>
 
 <script>
-let ALL=[], currentUN=null, currentView='home';
+let ALL=[], currentUN=null, currentView='home', mwFilter='all';
 let filteredUnit=[], filteredAll=[];
 let sortFieldUnit='fecha_inicio', sortDirUnit=1;
 let sortFieldAll='fecha_inicio', sortDirAll=1;
@@ -460,6 +487,21 @@ function saveLocal(id,fields){
   localStorage.setItem('cnel_seg',JSON.stringify(s));
 }
 
+function setMwFilter(f){
+  mwFilter=f;
+  // Update button states
+  document.getElementById('mwBtnAll').className='mw-btn'+(f==='all'?' active-all':'');
+  document.getElementById('mwBtnGte').className='mw-btn'+(f==='gte'?' active-gte':'');
+  document.getElementById('mwBtnLt').className ='mw-btn'+(f==='lt' ?' active-lt' :'');
+  renderHome();
+}
+
+function applyMwFilter(data){
+  if(mwFilter==='gte') return data.filter(t=>(t.mw_desconectados||0)>=2);
+  if(mwFilter==='lt')  return data.filter(t=>(t.mw_desconectados||0)<2);
+  return data;
+}
+
 function init(){
   const fechas=ALL.map(t=>t.fecha_inicio).filter(Boolean).sort();
   if(fechas.length)
@@ -473,39 +515,50 @@ function renderHome(){
   show('homeView');hide('unitView');hide('allView');
   setBreadcrumb([{label:'Todas las Unidades'}]);
 
-  const total=ALL.length;
-  const cli=ALL.reduce((s,t)=>s+(t.clientes_afectados||0),0);
-  const mw=ALL.reduce((s,t)=>s+(t.mw_desconectados||0),0);
-  const val=ALL.reduce((s,t)=>s+(t.valoracion||0),0);
-  const comp=ALL.filter(t=>t.estado==='completado').length;
+  const BASE = applyMwFilter(ALL);
+
+  // Update mw count label
+  const mwLabel = mwFilter==='gte' ? '≥ 2 MW' : mwFilter==='lt' ? '< 2 MW' : 'todos';
+  document.getElementById('mwCount').textContent =
+    mwFilter==='all' ? `${BASE.length} trabajos` : `${BASE.length} de ${ALL.length} trabajos (${mwLabel})`;
+
+  const total=BASE.length;
+  const cli=BASE.reduce((s,t)=>s+(t.clientes_afectados||0),0);
+  const mw=BASE.reduce((s,t)=>s+(t.mw_desconectados||0),0);
+  const val=BASE.reduce((s,t)=>s+(t.valoracion||0),0);
+  const ens=BASE.reduce((s,t)=>s+(t.energia_kwh||0),0);
+  const comp=BASE.filter(t=>t.estado==='completado').length;
 
   document.getElementById('globalKpis').innerHTML=`
     <div class="kpi"><div class="kpi-label">Total Trabajos</div><div class="kpi-value">${total}</div><div class="kpi-sub">planificados</div></div>
     <div class="kpi a"><div class="kpi-label">Clientes Afectados</div><div class="kpi-value">${cli.toLocaleString('es-EC')}</div><div class="kpi-sub">total acumulado</div></div>
     <div class="kpi"><div class="kpi-label">MW Desconectados</div><div class="kpi-value">${mw.toFixed(1)}</div><div class="kpi-sub">MW acumulados</div></div>
-    <div class="kpi o"><div class="kpi-label">Valoración Total</div><div class="kpi-value">$${Math.round(val).toLocaleString('es-EC')}</div><div class="kpi-sub">USD</div></div>
+    <div class="kpi o"><div class="kpi-label">Energía No Suministrada</div><div class="kpi-value">${Math.round(ens/1000).toLocaleString('es-EC')}</div><div class="kpi-sub">MWh totales</div></div>
     <div class="kpi g"><div class="kpi-label">Completados</div><div class="kpi-value">${comp}</div><div class="kpi-sub">de ${total} trabajos</div></div>`;
 
   const empresas=[...new Set(ALL.map(t=>t.empresa))].sort();
   document.getElementById('unGrid').innerHTML=empresas.map(un=>{
-    const ts=ALL.filter(t=>t.empresa===un);
+    const ts=applyMwFilter(ALL.filter(t=>t.empresa===un));
+    if(ts.length===0) return '';
     const prev=ts.filter(t=>t.tipo_trabajo.toLowerCase().includes('prevent')).length;
     const corr=ts.filter(t=>t.tipo_trabajo.toLowerCase().includes('correct')).length;
     const ing=ts.filter(t=>t.tipo_trabajo.toLowerCase().includes('ingreso')||t.tipo_trabajo.toLowerCase().includes('carga')).length;
     const trans=ts.filter(t=>t.es_transelectric).length;
     const cli=ts.reduce((s,t)=>s+(t.clientes_afectados||0),0);
     const mwun=ts.reduce((s,t)=>s+(t.mw_desconectados||0),0);
+    const ens=ts.reduce((s,t)=>s+(t.energia_kwh||0),0);
     const comp=ts.filter(t=>t.estado==='completado').length;
-    const prov=[...new Set(ts.map(t=>t.provincia).filter(Boolean))].join(', ');
+    const prov=[...new Set(ALL.filter(t=>t.empresa===un).map(t=>t.provincia).filter(Boolean))].join(', ');
     return `<div class="un-card" onclick="openUN('${un}')">
       <div class="un-card-header">
         <div><div class="un-card-name">${un}</div><div class="un-card-sub">${prov||'Múltiples provincias'}</div></div>
         <div class="un-arrow">→</div>
       </div>
-      <div class="un-card-kpis">
+      <div class="un-card-kpis" style="grid-template-columns:repeat(3,1fr)">
         <div class="un-mini-kpi"><div class="un-mini-label">Total trabajos</div><div class="un-mini-value">${ts.length}</div></div>
         <div class="un-mini-kpi"><div class="un-mini-label">Clientes afectados</div><div class="un-mini-value">${cli.toLocaleString('es-EC')}</div></div>
         <div class="un-mini-kpi"><div class="un-mini-label">MW desconectados</div><div class="un-mini-value">${mwun.toFixed(1)}</div></div>
+        <div class="un-mini-kpi"><div class="un-mini-label">ENS (kWh)</div><div class="un-mini-value">${Math.round(ens).toLocaleString('es-EC')}</div></div>
         <div class="un-mini-kpi"><div class="un-mini-label">Completados</div><div class="un-mini-value">${comp} / ${ts.length}</div></div>
       </div>
       <div class="un-card-pills">
@@ -629,11 +682,13 @@ function openUN(un){
 
   const cli=ts.reduce((s,t)=>s+(t.clientes_afectados||0),0);
   const mwu=ts.reduce((s,t)=>s+(t.mw_desconectados||0),0);
+  const ens=ts.reduce((s,t)=>s+(t.energia_kwh||0),0);
   const comp=ts.filter(t=>t.estado==='completado').length;
   document.getElementById('unitKpis').innerHTML=`
     <div class="kpi"><div class="kpi-label">Trabajos</div><div class="kpi-value">${ts.length}</div><div class="kpi-sub">planificados</div></div>
     <div class="kpi a"><div class="kpi-label">Clientes Afectados</div><div class="kpi-value">${cli.toLocaleString('es-EC')}</div><div class="kpi-sub">usuarios</div></div>
     <div class="kpi"><div class="kpi-label">MW Desconectados</div><div class="kpi-value">${mwu.toFixed(1)}</div><div class="kpi-sub">MW</div></div>
+    <div class="kpi o"><div class="kpi-label">Energía No Suministrada</div><div class="kpi-value">${Math.round(ens).toLocaleString('es-EC')}</div><div class="kpi-sub">kWh</div></div>
     <div class="kpi g"><div class="kpi-label">Completados</div><div class="kpi-value">${comp}</div><div class="kpi-sub">de ${ts.length} trabajos</div></div>`;
 
   const fechas=ts.map(t=>t.fecha_inicio).filter(Boolean).sort();
