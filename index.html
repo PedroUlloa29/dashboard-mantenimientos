@@ -688,7 +688,7 @@ function openUN(un){
     <div class="kpi"><div class="kpi-label">Trabajos</div><div class="kpi-value">${ts.length}</div><div class="kpi-sub">planificados</div></div>
     <div class="kpi a"><div class="kpi-label">Clientes Afectados</div><div class="kpi-value">${cli.toLocaleString('es-EC')}</div><div class="kpi-sub">usuarios</div></div>
     <div class="kpi"><div class="kpi-label">MW Desconectados</div><div class="kpi-value">${mwu.toFixed(1)}</div><div class="kpi-sub">MW</div></div>
-    <div class="kpi o"><div class="kpi-label">Energía No Suministrada</div><div class="kpi-value">${Math.round(ens).toLocaleString('es-EC')}</div><div class="kpi-sub">kWh</div></div>
+    <div class="kpi o"><div class="kpi-label">Energía No Suministrada</div><div class="kpi-value">${(ens/1000).toFixed(1).replace('.',',')}</div><div class="kpi-sub">MWh</div></div>
     <div class="kpi g"><div class="kpi-label">Completados</div><div class="kpi-value">${comp}</div><div class="kpi-sub">de ${ts.length} trabajos</div></div>`;
 
   const fechas=ts.map(t=>t.fecha_inicio).filter(Boolean).sort();
