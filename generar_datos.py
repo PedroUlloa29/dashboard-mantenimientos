@@ -36,6 +36,12 @@ def fmt_date(v):
 def fmt_time(v):
     try:
         if pd.isna(v): return None
+        s = str(v).strip()
+        # Ya viene como "HH:MM:SS" o "HH:MM"
+        if ':' in s and len(s) >= 4:
+            parts = s.split(':')
+            return f"{int(parts[0]):02d}:{int(parts[1]):02d}"
+        # Viene como fracción decimal del día (formato interno Excel)
         return pd.Timestamp(v).strftime('%H:%M')
     except:
         return None
@@ -211,12 +217,13 @@ def main():
             "obs_adicionales":     ss(r.get('Unnamed: 22')),
             "es_transelectric":    is_transelectric(r),
             # Seguimiento — recuperado del JSON previo o vacío si es nuevo
-            "estado":              seg.get('estado', 'pendiente'),
-            "completado_por":      seg.get('completado_por', ''),
-            "completado_fecha":    seg.get('completado_fecha', ''),
-            "obs_ejecucion":       seg.get('obs_ejecucion', ''),
-            "trabajos_adicionales":seg.get('trabajos_adicionales', ''),
-            "validado_director":   seg.get('validado_director', False),
+            "estado":                 seg.get('estado', 'pendiente'),
+            "completado_por":         seg.get('completado_por', ''),
+            "fecha_hora_inicio_real":  seg.get('fecha_hora_inicio_real', ''),
+            "fecha_hora_fin_real":     seg.get('fecha_hora_fin_real', ''),
+            "obs_ejecucion":          seg.get('obs_ejecucion', ''),
+            "trabajos_adicionales":   seg.get('trabajos_adicionales', ''),
+            "validado_director":      seg.get('validado_director', False),
         }
         trabajos.append(t)
 

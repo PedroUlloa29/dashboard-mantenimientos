@@ -1037,12 +1037,20 @@ function buildModal(t){
       <div class="dcard"><div class="dcard-label">Ubicación Geográfica</div><div class="dcard-value">${escH(geo)}</div></div>
       <div class="dcard"><div class="dcard-label">Código GIS</div><div class="dcard-value mono">${t.codigo_gis||'—'}</div></div>
     </div></div>
-  <div class="m-section"><div class="m-section-title">Ventana de Ejecución</div>
+  <div class="m-section"><div class="m-section-title">Ventana de Ejecución Planificada</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <div class="time-block" style="flex:1;min-width:220px">
-        <div><div class="time-lbl">Inicio</div><div class="time-date">${fi}</div><div class="time-hour">${t.hora_inicio||'—'}</div></div>
+        <div>
+          <div class="time-lbl">Inicio Planificado</div>
+          <div class="time-date">${fi}</div>
+          <div class="time-hour">${t.hora_inicio||'—'}</div>
+        </div>
         <div class="time-arr">→</div>
-        <div><div class="time-lbl">Fin</div><div class="time-date">${ff}</div><div class="time-hour">${t.hora_fin||'—'}</div></div>
+        <div>
+          <div class="time-lbl">Fin Planificado</div>
+          <div class="time-date">${ff}</div>
+          <div class="time-hour">${t.hora_fin||'—'}</div>
+        </div>
       </div>
       <div class="dcard" style="flex:0 0 130px"><div class="dcard-label">MW Desconectados</div><div class="dcard-value lg">${t.mw_desconectados.toFixed(2)}</div></div>
     </div></div>
@@ -1068,8 +1076,12 @@ function buildModal(t){
           <span class="eopt ${ea==='completado'?'ec':''}" data-e="completado">✅ Completado</span>
         </div></div></div>
       <div class="form-row">
-        <div class="form-group"><label>Ejecutado por</label><input type="text" id="iBy" placeholder="Nombre del responsable..." value="${escH(t.completado_por)}"></div>
-        <div class="form-group"><label>Fecha y hora de finalización</label><input type="text" id="iFecha" placeholder="Ej: 30/05/2026 04:15" value="${escH(t.completado_fecha)}"></div>
+        <div class="form-group"><label>Ejecutado por (líder / técnico responsable)</label><input type="text" id="iBy" placeholder="Nombre del responsable..." value="${escH(t.completado_por)}"></div>
+        <div class="form-group"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>📅 Fecha y hora de INICIO real</label><input type="text" id="iFechaIni" placeholder="Ej: 30/05/2026 01:00" value="${escH(t.fecha_hora_inicio_real)}"></div>
+        <div class="form-group"><label>📅 Fecha y hora de FINALIZACIÓN real</label><input type="text" id="iFechaFin" placeholder="Ej: 30/05/2026 04:15" value="${escH(t.fecha_hora_fin_real)}"></div>
       </div>
       <div class="form-group" style="margin-bottom:10px"><label>Observaciones de ejecución (para el Ministerio)</label>
         <textarea id="iObs" placeholder="Describa cómo se ejecutó, novedades, condiciones encontradas...">${escH(t.obs_ejecucion)}</textarea></div>
@@ -1090,7 +1102,8 @@ function guardar(id){
   if(eOpt) for(const[k,v] of Object.entries(eMap)) if(eOpt.classList.contains(k)){estado=v;break;}
   const u={estado,
     completado_por:document.getElementById('iBy').value,
-    completado_fecha:document.getElementById('iFecha').value,
+    fecha_hora_inicio_real:document.getElementById('iFechaIni').value,
+    fecha_hora_fin_real:document.getElementById('iFechaFin').value,
     obs_ejecucion:document.getElementById('iObs').value,
     trabajos_adicionales:document.getElementById('iAdd').value,
     validado_director:document.getElementById('iVal').checked};
