@@ -709,7 +709,7 @@ function rowHTML(t, showEmpresa){
   const fechaStr=t.fecha_inicio?fmtDate(t.fecha_inicio):'—';
   const horaStr=t.hora_inicio&&t.hora_fin?`${t.hora_inicio}–${t.hora_fin}`:'';
   const empresaCell=showEmpresa?`<td class="td-empresa">${t.empresa.replace('CNEL ','')}</td>`:'';
-  return `<tr${trCls} onclick="openModal(${t.id})">
+  return `<tr${trCls} onclick="openModal('${t.id}')">
     <td class="mono" style="color:var(--text3);width:40px">${t.id}</td>
     ${empresaCell}
     <td class="td-desc">${transTag}${escH(t.descripcion)}</td>
@@ -1077,7 +1077,7 @@ function buildModal(t){
         <textarea id="iAdd" style="min-height:55px" placeholder="Indique trabajos adicionales al alcance original...">${escH(t.trabajos_adicionales)}</textarea></div>
       <div class="form-actions">
         <label class="val-check"><input type="checkbox" id="iVal" ${vc}><span>Validado por Director de Mantenimiento</span></label>
-        <button class="btn primary" onclick="guardar(${t.id})">Guardar Registro</button>
+        <button class="btn primary" onclick="guardar('${t.id}')">Guardar Registro</button>
         <span class="saved-ind" id="savedInd">✓ Guardado correctamente</span>
       </div>
     </div></div>`;
