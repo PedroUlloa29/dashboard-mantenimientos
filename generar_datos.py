@@ -36,12 +36,15 @@ def fmt_date(v):
 def fmt_time(v):
     try:
         if pd.isna(v): return None
+        import datetime as dt_mod
+        if isinstance(v, dt_mod.time):
+            return f"{v.hour:02d}:{v.minute:02d}"
+        if isinstance(v, dt_mod.datetime):
+            return f"{v.hour:02d}:{v.minute:02d}"
         s = str(v).strip()
-        # Ya viene como "HH:MM:SS" o "HH:MM"
         if ':' in s and len(s) >= 4:
             parts = s.split(':')
             return f"{int(parts[0]):02d}:{int(parts[1]):02d}"
-        # Viene como fracción decimal del día (formato interno Excel)
         return pd.Timestamp(v).strftime('%H:%M')
     except:
         return None
@@ -86,8 +89,10 @@ def is_transelectric(r):
 
 def normalize_tipo(tipo):
     t = ss(tipo).lower()
-    if 'ingreso' in t or 'carga' in t:
+    if 'ingreso' in t or 'carga' in t or 'extensi' in t:
         return 'Ingreso Nuevas Cargas'
+    if 'prevent' in t: return 'Trabajos Preventivos'
+    if 'correct' in t: return 'Trabajos Correctivos'
     return ss(tipo)
 
 def encontrar_excel(arg):

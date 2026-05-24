@@ -376,12 +376,18 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
 
   <!-- VISTA UNIDAD -->
   <div id="unitView">
-    <div class="unit-header-bar">
-      <div>
+    <div class="unit-header-bar" style="flex-wrap:wrap;gap:12px">
+      <div style="flex:1;min-width:200px">
         <div class="unit-name" id="unitName"></div>
         <div style="font-size:12px;color:var(--text3);margin-top:3px" id="unitSub"></div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px">
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)">MW:</span>
+          <button class="mw-btn" id="uMwBtnAll" style="padding:4px 11px;font-size:11px" onclick="setMwFilter('all')">⚡ Todos</button>
+          <button class="mw-btn" id="uMwBtnGte" style="padding:4px 11px;font-size:11px" onclick="setMwFilter('gte')">≥ 2 MW</button>
+          <button class="mw-btn" id="uMwBtnLt"  style="padding:4px 11px;font-size:11px" onclick="setMwFilter('lt')">&#60; 2 MW</button>
+        </div>
         <button class="btn-export" onclick="exportarExcel('unit')">⬇ Exportar Excel</button>
         <button class="btn" onclick="goHome()">← Volver al inicio</button>
       </div>
@@ -487,13 +493,30 @@ function saveLocal(id,fields){
   localStorage.setItem('cnel_seg',JSON.stringify(s));
 }
 
+function syncUnitMwBtns(){
+  const btnAll=document.getElementById('uMwBtnAll');
+  const btnGte=document.getElementById('uMwBtnGte');
+  const btnLt =document.getElementById('uMwBtnLt');
+  if(btnAll){ btnAll.className='mw-btn'+(mwFilter==='all'?' active-all':''); }
+  if(btnGte){ btnGte.className='mw-btn'+(mwFilter==='gte'?' active-gte':''); }
+  if(btnLt ){ btnLt.className ='mw-btn'+(mwFilter==='lt' ?' active-lt' :''); }
+}
+
 function setMwFilter(f){
   mwFilter=f;
-  // Update button states
-  document.getElementById('mwBtnAll').className='mw-btn'+(f==='all'?' active-all':'');
-  document.getElementById('mwBtnGte').className='mw-btn'+(f==='gte'?' active-gte':'');
-  document.getElementById('mwBtnLt').className ='mw-btn'+(f==='lt' ?' active-lt' :'');
-  renderHome();
+  // Update home MW buttons
+  const b=document.getElementById('mwBtnAll');
+  if(b){
+    document.getElementById('mwBtnAll').className='mw-btn'+(f==='all'?' active-all':'');
+    document.getElementById('mwBtnGte').className='mw-btn'+(f==='gte'?' active-gte':'');
+    document.getElementById('mwBtnLt').className ='mw-btn'+(f==='lt' ?' active-lt' :'');
+  }
+  // Sync unit buttons if visible
+  syncUnitMwBtns();
+  // Refresh current view
+  if(currentView==='home') renderHome();
+  else if(currentView==='unit'){ openUN(currentUN); }
+  else if(currentView==='all') applyAllFilters();
 }
 
 function applyMwFilter(data){
@@ -554,11 +577,10 @@ function renderHome(){
         <div><div class="un-card-name">${un}</div><div class="un-card-sub">${prov||'Múltiples provincias'}</div></div>
         <div class="un-arrow">→</div>
       </div>
-      <div class="un-card-kpis" style="grid-template-columns:repeat(3,1fr)">
+      <div class="un-card-kpis">
         <div class="un-mini-kpi"><div class="un-mini-label">Total trabajos</div><div class="un-mini-value">${ts.length}</div></div>
         <div class="un-mini-kpi"><div class="un-mini-label">Clientes afectados</div><div class="un-mini-value">${cli.toLocaleString('es-EC')}</div></div>
         <div class="un-mini-kpi"><div class="un-mini-label">MW desconectados</div><div class="un-mini-value">${mwun.toFixed(1)}</div></div>
-        <div class="un-mini-kpi"><div class="un-mini-label">ENS (kWh)</div><div class="un-mini-value">${Math.round(ens).toLocaleString('es-EC')}</div></div>
         <div class="un-mini-kpi"><div class="un-mini-label">Completados</div><div class="un-mini-value">${comp} / ${ts.length}</div></div>
       </div>
       <div class="un-card-pills">
@@ -622,7 +644,8 @@ function applyAllFilters(){
   const estado=document.getElementById('aEstado').value;
   const from=document.getElementById('aDateFrom').value;
   const to=document.getElementById('aDateTo').value;
-  filteredAll=ALL.filter(t=>{
+  const baseAll=applyMwFilter(ALL);
+  filteredAll=baseAll.filter(t=>{
     if(un&&t.empresa!==un) return false;
     if(tipo&&t.tipo_trabajo!==tipo) return false;
     if(estado&&t.estado!==estado) return false;
@@ -680,12 +703,16 @@ function openUN(un){
   const prov=[...new Set(ts.map(t=>t.provincia).filter(Boolean))].join(' · ');
   document.getElementById('unitSub').textContent=prov||'';
 
-  const cli=ts.reduce((s,t)=>s+(t.clientes_afectados||0),0);
-  const mwu=ts.reduce((s,t)=>s+(t.mw_desconectados||0),0);
-  const ens=ts.reduce((s,t)=>s+(t.energia_kwh||0),0);
-  const comp=ts.filter(t=>t.estado==='completado').length;
+  // Sync MW buttons in unit view
+  syncUnitMwBtns();
+
+  const tsF=applyMwFilter(ts);
+  const cli=tsF.reduce((s,t)=>s+(t.clientes_afectados||0),0);
+  const mwu=tsF.reduce((s,t)=>s+(t.mw_desconectados||0),0);
+  const ens=tsF.reduce((s,t)=>s+(t.energia_kwh||0),0);
+  const comp=tsF.filter(t=>t.estado==='completado').length;
   document.getElementById('unitKpis').innerHTML=`
-    <div class="kpi"><div class="kpi-label">Trabajos</div><div class="kpi-value">${ts.length}</div><div class="kpi-sub">planificados</div></div>
+    <div class="kpi"><div class="kpi-value">${tsF.length}</div><div class="kpi-label" style="margin-top:5px">Trabajos</div><div class="kpi-sub">planificados</div></div>
     <div class="kpi a"><div class="kpi-label">Clientes Afectados</div><div class="kpi-value">${cli.toLocaleString('es-EC')}</div><div class="kpi-sub">usuarios</div></div>
     <div class="kpi"><div class="kpi-label">MW Desconectados</div><div class="kpi-value">${mwu.toFixed(1)}</div><div class="kpi-sub">MW</div></div>
     <div class="kpi o"><div class="kpi-label">Energía No Suministrada</div><div class="kpi-value">${(ens/1000).toFixed(1).replace('.',',')}</div><div class="kpi-sub">MWh</div></div>
@@ -726,8 +753,8 @@ function applyUnitFilters(){
   const estado=document.getElementById('fEstado').value;
   const from=document.getElementById('fDateFrom').value;
   const to=document.getElementById('fDateTo').value;
-  filteredUnit=ALL.filter(t=>{
-    if(t.empresa!==currentUN) return false;
+  const base=applyMwFilter(ALL.filter(t=>t.empresa===currentUN));
+  filteredUnit=base.filter(t=>{
     if(tipo&&t.tipo_trabajo!==tipo) return false;
     if(estado&&t.estado!==estado) return false;
     if(from&&t.fecha_inicio&&t.fecha_inicio<from) return false;
