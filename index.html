@@ -309,6 +309,22 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
   padding:3px 9px;transition:all .15s;
 }
 .logout-btn:hover{color:var(--red);border-color:var(--red-bd);background:var(--red-bg)}
+.gerencia-badge{
+  font-size:11px;font-weight:600;color:var(--green);
+  background:var(--green-bg);border:1px solid var(--green-bd);
+  border-radius:4px;padding:3px 9px;
+}
+/* UN NAVIGATOR */
+.un-navigator{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:7px;padding:5px 10px;
+}
+.un-navigator select{
+  min-width:180px;font-size:12px;font-weight:600;
+  background:transparent;border:none;color:var(--text);
+  padding:2px 4px;cursor:pointer;outline:none;
+}
 </style>
 </head>
 <body>
@@ -319,6 +335,18 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
     <div class="login-logo">CN</div>
     <div class="login-title">CNEL EP</div>
     <div class="login-sub">Seguimiento de Mantenimientos Planificados<br>Dirección de Mantenimiento</div>
+
+    <!-- BOTÓN GERENCIA -->
+    <button class="login-btn" style="background:#166534;margin-bottom:18px" onclick="entrarGerencia()">
+      📊 Vista Gerencia — Ingresar sin contraseña
+    </button>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <span style="font-size:11px;color:var(--text3);white-space:nowrap">Acceso con credenciales</span>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>
+
     <div class="login-field">
       <label>Usuario</label>
       <input type="text" id="loginUser" placeholder="Ingrese su usuario" autocomplete="username"
@@ -331,7 +359,7 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
     </div>
     <button class="login-btn" onclick="doLogin()">Ingresar</button>
     <div class="login-error" id="loginError">Usuario o contraseña incorrectos</div>
-    <div class="login-footer">Acceso restringido — solo personal autorizado</div>
+    <div class="login-footer">Acceso restringido — solo personal autorizado CNEL EP</div>
   </div>
 </div>
 
@@ -345,7 +373,8 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
   </div>
   <div class="header-right" style="gap:10px">
     <span class="period-badge" id="periodBadge">Cargando...</span>
-    <button class="logout-btn" onclick="doLogout()" title="Cerrar sesión">⏻ Salir</button>
+    <span id="headerUserBadge"></span>
+    <button class="logout-btn" id="btnLogout" onclick="doLogout()" title="Cerrar sesión">⏻ Salir</button>
   </div>
 </header>
 
@@ -403,6 +432,15 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
         </select>
       </div>
       <div class="filter-group">
+        <span class="filter-label">Etapa Funcional</span>
+        <select id="aEtapa">
+          <option value="">Todas</option>
+          <option value="SUBESTACIÓN">Subestación</option>
+          <option value="ALIMENTADOR">Alimentador</option>
+          <option value="LST">LST</option>
+        </select>
+      </div>
+      <div class="filter-group">
         <span class="filter-label">Estado</span>
         <select id="aEstado">
           <option value="">Todos</option>
@@ -450,8 +488,11 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
   <div id="unitView">
     <div class="unit-header-bar" style="flex-wrap:wrap;gap:12px">
       <div style="flex:1;min-width:200px">
-        <div class="unit-name" id="unitName"></div>
-        <div style="font-size:12px;color:var(--text3);margin-top:3px" id="unitSub"></div>
+        <div class="un-navigator" style="margin-bottom:6px">
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);white-space:nowrap">Unidad:</span>
+          <select id="unNavigator" onchange="openUN(this.value)"></select>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px" id="unitSub"></div>
       </div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px">
@@ -461,7 +502,7 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
           <button class="mw-btn" id="uMwBtnLt"  style="padding:4px 11px;font-size:11px" onclick="setMwFilter('lt')">&#60; 2 MW</button>
         </div>
         <button class="btn-export" onclick="exportarExcel('unit')">⬇ Exportar Excel</button>
-        <button class="btn" onclick="goHome()">← Volver al inicio</button>
+        <button class="btn" onclick="goHome()">← Inicio</button>
       </div>
     </div>
     <div class="unit-kpi-row" id="unitKpis"></div>
@@ -473,6 +514,15 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
           <option value="Trabajos Preventivos">Preventivo</option>
           <option value="Trabajos Correctivos">Correctivo</option>
           <option value="Ingreso Nuevas Cargas">Ingreso Cargas</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Etapa Funcional</span>
+        <select id="fEtapa">
+          <option value="">Todas</option>
+          <option value="SUBESTACIÓN">Subestación</option>
+          <option value="ALIMENTADOR">Alimentador</option>
+          <option value="LST">LST</option>
         </select>
       </div>
       <div class="filter-group">
@@ -692,7 +742,7 @@ function openAllView(){
     document.getElementById('aDateTo').value=fechas[fechas.length-1];
   }
 
-  ['aUN','aTipo','aEstado','aDateFrom','aDateTo'].forEach(id=>
+  ['aUN','aTipo','aEtapa','aEstado','aDateFrom','aDateTo'].forEach(id=>
     document.getElementById(id).addEventListener('change',applyAllFilters));
 
   applyAllFilters();
@@ -701,6 +751,7 @@ function openAllView(){
 function clearAllFilters(){
   document.getElementById('aUN').value='';
   document.getElementById('aTipo').value='';
+  document.getElementById('aEtapa').value='';
   document.getElementById('aEstado').value='';
   const fechas=ALL.map(t=>t.fecha_inicio).filter(Boolean).sort();
   if(fechas.length){
@@ -716,10 +767,12 @@ function applyAllFilters(){
   const estado=document.getElementById('aEstado').value;
   const from=document.getElementById('aDateFrom').value;
   const to=document.getElementById('aDateTo').value;
+  const etapaA=document.getElementById('aEtapa').value;
   const baseAll=applyMwFilter(ALL);
   filteredAll=baseAll.filter(t=>{
     if(un&&t.empresa!==un) return false;
     if(tipo&&t.tipo_trabajo!==tipo) return false;
+    if(etapaA&&!t.etapa.toUpperCase().includes(etapaA)) return false;
     if(estado&&t.estado!==estado) return false;
     if(from&&t.fecha_inicio&&t.fecha_inicio<from) return false;
     if(to&&t.fecha_inicio&&t.fecha_inicio>to) return false;
@@ -770,7 +823,14 @@ function openUN(un){
     {label:'Todas las Unidades',action:'goHome()'},
     {label:un}
   ]);
-  document.getElementById('unitName').textContent=un;
+  // Populate UN navigator dropdown
+  const nav = document.getElementById('unNavigator');
+  if(nav){
+    const empresas=[...new Set(ALL.map(t=>t.empresa))].sort();
+    nav.innerHTML = empresas.map(e=>
+      `<option value="${e}" ${e===un?'selected':''>${e}</option>`
+    ).join('');
+  }
   const ts=ALL.filter(t=>t.empresa===un);
   const prov=[...new Set(ts.map(t=>t.provincia).filter(Boolean))].join(' · ');
   document.getElementById('unitSub').textContent=prov||'';
@@ -797,7 +857,7 @@ function openUN(un){
   }
 
   // Re-bind filters (clone to remove old listeners)
-  ['fTipo','fEstado','fDateFrom','fDateTo'].forEach(id=>{
+  ['fTipo','fEtapa','fEstado','fDateFrom','fDateTo'].forEach(id=>{
     const el=document.getElementById(id);
     const cl=el.cloneNode(true);
     el.parentNode.replaceChild(cl,el);
@@ -810,6 +870,7 @@ function openUN(un){
 
 function clearUnitFilters(){
   document.getElementById('fTipo').value='';
+  document.getElementById('fEtapa').value='';
   document.getElementById('fEstado').value='';
   const ts=ALL.filter(t=>t.empresa===currentUN);
   const fechas=ts.map(t=>t.fecha_inicio).filter(Boolean).sort();
@@ -822,12 +883,14 @@ function clearUnitFilters(){
 
 function applyUnitFilters(){
   const tipo=document.getElementById('fTipo').value;
+  const etapa=document.getElementById('fEtapa').value;
   const estado=document.getElementById('fEstado').value;
   const from=document.getElementById('fDateFrom').value;
   const to=document.getElementById('fDateTo').value;
   const base=applyMwFilter(ALL.filter(t=>t.empresa===currentUN));
   filteredUnit=base.filter(t=>{
     if(tipo&&t.tipo_trabajo!==tipo) return false;
+    if(etapa&&!t.etapa.toUpperCase().includes(etapa)) return false;
     if(estado&&t.estado!==estado) return false;
     if(from&&t.fecha_inicio&&t.fecha_inicio<from) return false;
     if(to&&t.fecha_inicio&&t.fecha_inicio>to) return false;
@@ -881,6 +944,9 @@ function rowHTML(t, showEmpresa){
 
 /* ─── EXPORTAR EXCEL ─── */
 function exportarExcel(scope){
+  if(isReadOnly() && scope==='unit'){
+    // Gerencia can export — allowed
+  }
   const data = scope==='unit' ? filteredUnit : filteredAll;
   if(!data.length){alert('No hay datos para exportar con los filtros actuales.');return;}
 
@@ -1386,8 +1452,30 @@ function isDirector(){
 }
 
 function isReadOnly(){
-  // Gerencia solo lectura
-  return currentUser === 'gerencia.distribucion';
+  return currentUser === 'gerencia' || currentUser === 'gerencia.distribucion';
+}
+
+function entrarGerencia(){
+  currentUser = 'gerencia';
+  sessionStorage.setItem('cnel_session', JSON.stringify({
+    user: 'gerencia', exp: Date.now() + 12*60*60*1000
+  }));
+  document.getElementById('loginScreen').style.display = 'none';
+  updateHeaderBadge();
+  loadData();
+}
+
+function updateHeaderBadge(){
+  const badge = document.getElementById('headerUserBadge');
+  const logout = document.getElementById('btnLogout');
+  if(!badge) return;
+  if(currentUser === 'gerencia'){
+    badge.innerHTML = '<span class="gerencia-badge">📊 Vista Gerencia</span>';
+    if(logout) logout.textContent = '✕ Salir';
+  } else {
+    badge.innerHTML = '<span style="font-size:11px;color:var(--text3)">👤 ' + currentUser + '</span>';
+    if(logout) logout.textContent = '⏻ Salir';
+  }
 }
 
 function canEdit(empresa){
@@ -1422,6 +1510,7 @@ function checkSession(){
     if(data.exp > Date.now()){
       currentUser = data.user;
       document.getElementById('loginScreen').style.display = 'none';
+      setTimeout(updateHeaderBadge, 0);
       return true;
     }
   }
@@ -1440,6 +1529,7 @@ function doLogin(){
     currentUser = user;
     document.getElementById('loginScreen').style.display = 'none';
     err.classList.remove('show');
+    updateHeaderBadge();
     loadData();
   } else {
     err.classList.add('show');
