@@ -591,6 +591,36 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
 
 <script>
 let ALL=[], currentUN=null, currentView='home', mwFilter='all', currentUser='';
+
+// Mapeo usuario → empresa que puede editar
+const USER_UNIT = {
+  'lider.el_oro':     'CNEL EL ORO',
+  'lider.guayas':     'CNEL GUAYAS LOS RIOS',
+  'lider.esmeraldas': 'CNEL ESMERALDAS',
+  'lider.bolivar':    'CNEL BOLIVAR',
+  'lider.los_rios':   'CNEL LOS RIOS',
+  'lider.manabi':     'CNEL MANABÍ',
+  'lider.milagro':    'CNEL MILAGRO',
+  'lider.sucumbios':  'CNEL SUCUMBÍOS',
+  'lider.guayaquil':  'CNEL GUAYAQUIL',
+};
+
+// USUARIOS Y CLAVES — modifique aquí para agregar o cambiar accesos
+const USERS = {
+  'director.mantenimiento': 'CNEL2026*',
+  'lider.el_oro':           'ElOro2026#',
+  'lider.guayas':           'Guayas2026#',
+  'lider.esmeraldas':       'Esmer2026#',
+  'lider.bolivar':          'Bolivar2026#',
+  'lider.los_rios':         'LosRios2026#',
+  'lider.manabi':           'Manabi2026#',
+  'lider.milagro':          'Milagro2026#',
+  'lider.sucumbios':        'Sucumb2026#',
+  'lider.guayaquil':        'Guayaquil2026#',
+  'gerencia.distribucion':  'GerDist2026#',
+};
+
+const SESSION_KEY = 'cnel_session';
 let filteredUnit=[], filteredAll=[];
 let sortFieldUnit='fecha_inicio', sortDirUnit=1;
 let sortFieldAll='fecha_inicio', sortDirAll=1;
@@ -1434,18 +1464,6 @@ function escH(s){
 
 /* ─── AUTH ─── */
 
-// Mapeo usuario → empresa que puede editar
-const USER_UNIT = {
-  'lider.el_oro':     'CNEL EL ORO',
-  'lider.guayas':     'CNEL GUAYAS LOS RIOS',
-  'lider.esmeraldas': 'CNEL ESMERALDAS',
-  'lider.bolivar':    'CNEL BOLIVAR',
-  'lider.los_rios':   'CNEL LOS RIOS',
-  'lider.manabi':     'CNEL MANABÍ',
-  'lider.milagro':    'CNEL MILAGRO',
-  'lider.sucumbios':  'CNEL SUCUMBÍOS',
-  'lider.guayaquil':  'CNEL GUAYAQUIL',
-};
 
 function isDirector(){
   return currentUser === 'director.mantenimiento';
@@ -1486,22 +1504,6 @@ function canEdit(empresa){
   // Líderes solo su propia unidad
   return USER_UNIT[currentUser] === empresa;
 }
-// USUARIOS Y CLAVES — modifique aquí para agregar o cambiar accesos
-const USERS = {
-  'director.mantenimiento': 'CNEL2026*',
-  'lider.el_oro':           'ElOro2026#',
-  'lider.guayas':           'Guayas2026#',
-  'lider.esmeraldas':       'Esmer2026#',
-  'lider.bolivar':          'Bolivar2026#',
-  'lider.los_rios':         'LosRios2026#',
-  'lider.manabi':           'Manabi2026#',
-  'lider.milagro':          'Milagro2026#',
-  'lider.sucumbios':        'Sucumb2026#',
-  'lider.guayaquil':        'Guayaquil2026#',
-  'gerencia.distribucion':  'GerDist2026#',
-};
-
-const SESSION_KEY = 'cnel_session';
 
 function checkSession(){
   const s = sessionStorage.getItem(SESSION_KEY);
