@@ -858,7 +858,7 @@ function openUN(un){
   if(nav){
     const empresas=[...new Set(ALL.map(t=>t.empresa))].sort();
     nav.innerHTML = empresas.map(e=>
-      `<option value="${e}" ${e===un?'selected':''>${e}</option>`
+      `<option value="${e}" ${e===un?'selected':''}>${e}</option>`
     ).join('');
   }
   const ts=ALL.filter(t=>t.empresa===un);
