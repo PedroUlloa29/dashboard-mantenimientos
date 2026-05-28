@@ -142,9 +142,37 @@ def main():
 
     print(f"\nLeyendo: {excel_path.name}")
     xl = pd.ExcelFile(excel_path)
-    df = pd.read_excel(xl, sheet_name='Hoja1', parse_dates=['Fecha de Inicio', 'Fecha de Fin'])
-    df.columns = [c.strip().replace('\n', ' ') for c in df.columns]
-    print(f"  → {len(df)} filas encontradas")
+
+    # Buscar la hoja correcta sin importar el nombre
+    df = None
+    for sheet in xl.sheet_names:
+        for hdr in [4, 0, 1, 2, 3]:
+            try:
+                temp = pd.read_excel(xl, sheet_name=sheet, header=hdr)
+                temp.columns = [str(c).strip().replace('\n', ' ') for c in temp.columns]
+                if 'Empresa' in temp.columns:
+                    df = temp
+                    print(f"  → Hoja: '{sheet}' (fila encabezado: {hdr})")
+                    break
+            except Exception:
+                continue
+        if df is not None:
+            break
+
+    if df is None:
+        print('ERROR: No se encontro ninguna hoja con la columna Empresa.')
+        print(f'Hojas disponibles: {xl.sheet_names}')
+        sys.exit(1)
+
+    # Limpiar filas sin empresa
+    df = df[df['Empresa'].notna() & (df['Empresa'].astype(str).str.strip() != 'nan')].reset_index(drop=True)
+
+    # Parsear fechas
+    for col in ['Fecha de Inicio', 'Fecha de Fin']:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col], errors='coerce')
+
+    print(f'  → {len(df)} filas encontradas')
 
     # Cargar seguimiento existente para preservarlo
     output_path = Path(__file__).parent / 'data.json'
