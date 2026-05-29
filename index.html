@@ -92,6 +92,13 @@ main{padding:24px 28px;max-width:1440px;width:100%;margin:0 auto}
   cursor:pointer;border:2px solid var(--accent);background:var(--accent-bg);color:var(--accent2);
   transition:all .15s;white-space:nowrap}
 .btn-ver-todos:hover{background:var(--accent);color:#fff}
+.btn-mapa{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 18px;border-radius:7px;font-family:var(--sans);font-size:12px;font-weight:600;
+  cursor:pointer;border:2px solid var(--green-bd);background:var(--green-bg);color:var(--green);
+  transition:all .15s;white-space:nowrap;text-decoration:none;
+}
+.btn-mapa:hover{background:var(--green);color:#fff}
 
 /* EXPORT button */
 .btn-export{
@@ -395,9 +402,14 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
     <div class="global-kpis" id="globalKpis"></div>
     <div class="section-header">
       <div class="section-title">Unidades de Negocio</div>
-      <button class="btn-ver-todos" onclick="openAllView()">
-        📋 Ver todos los mantenimientos
-      </button>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <a class="btn-mapa" href="https://www.arcgis.com/apps/dashboards/f9059c66c1d44228bd372c4d2908a04f" target="_blank" rel="noopener">
+          🗺 Ver mapa de mantenimientos
+        </a>
+        <button class="btn-ver-todos" onclick="openAllView()">
+          📋 Ver todos los mantenimientos
+        </button>
+      </div>
     </div>
     <div class="un-grid" id="unGrid"></div>
   </div>
