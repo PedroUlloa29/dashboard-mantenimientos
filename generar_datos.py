@@ -70,12 +70,13 @@ def si(v):
     except:
         return 0
 
-def generar_id(empresa, descripcion, subestacion, alimentador, fecha_inicio):
+def generar_id(empresa, descripcion, subestacion, alimentador, fecha_inicio, hora_inicio=''):
     """
     ID de 8 caracteres basado en el contenido del trabajo.
+    Incluye hora de inicio para diferenciar trabajos del mismo día con misma descripción.
     Estable: no cambia si agregan filas nuevas en cualquier posición del Excel.
     """
-    clave = f"{empresa}|{descripcion[:80]}|{subestacion}|{alimentador}|{fecha_inicio}"
+    clave = f"{empresa}|{descripcion[:80]}|{subestacion}|{alimentador}|{fecha_inicio}|{hora_inicio}"
     return hashlib.md5(clave.encode('utf-8')).hexdigest()[:8].upper()
 
 def is_transelectric(r):
@@ -213,7 +214,8 @@ def main():
             continue
 
         # Generar ID estable
-        tid = generar_id(empresa, descripcion, subestacion, alimentador, fecha_ini or '')
+        hora_ini = fmt_time(r.get('Hora inicio'))
+        tid = generar_id(empresa, descripcion, subestacion, alimentador, fecha_ini or '', hora_ini or '')
 
         # Manejar duplicados (muy raro, pero posible)
         if tid in ids_vistos:

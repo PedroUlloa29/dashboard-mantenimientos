@@ -1,7 +1,7 @@
 {
   "trabajos": [
     {
-      "id": "6D1FD606",
+      "id": "FC6319FA",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "CAMBIO DE TRANSFORMADOR PADMOUNTED DE SERVICIOS AUXILIARES / PRUEBAS ELÉCTRICAS DEL TRANSFORMADOR DE POTENCIA",
       "linea_subtransmision": "",
@@ -35,7 +35,41 @@
       "validado_director": false
     },
     {
-      "id": "839DDE08",
+      "id": "341FFC9C",
+      "empresa": "CNEL BOLIVAR",
+      "descripcion": "CONSTRUCCION DE RED DE MEDIO VOLTAJE Y MONTAJE DE TRANSFORMADOR",
+      "linea_subtransmision": "",
+      "subestacion": "03_03_ECHEANDIA",
+      "alimentador": "03_03_Echeandia 1",
+      "provincia": "BOLIVAR",
+      "canton": "ECHEANDIA",
+      "codigo_gis": "03EC030T13",
+      "tipo_trabajo": "Ingreso Nuevas Cargas",
+      "mw_desconectados": 0.19,
+      "fecha_inicio": "2026-05-30",
+      "hora_inicio": "01:00",
+      "fecha_fin": "2026-05-30",
+      "hora_fin": "04:00",
+      "valoracion": 14500.0,
+      "presupuesto": 0.0,
+      "justificacion": "",
+      "etapa": "ALIMENTADOR",
+      "clientes_afectados": 0,
+      "clientes_totales": 0,
+      "energia_kwh": 570.0,
+      "usd_energia": 51.3,
+      "obs_adicionales": "",
+      "es_transelectric": false,
+      "estado": "pendiente",
+      "completado_por": "",
+      "fecha_hora_inicio_real": "",
+      "fecha_hora_fin_real": "",
+      "obs_ejecucion": "",
+      "trabajos_adicionales": "",
+      "validado_director": false
+    },
+    {
+      "id": "B98AC87D",
       "empresa": "CNEL EL ORO",
       "descripcion": "CAMBIO DE BARRAS 15KV EN TABLERO DE DISTRIBUCIÓN SUBTERRÁNEO",
       "linea_subtransmision": "",
@@ -69,7 +103,7 @@
       "validado_director": false
     },
     {
-      "id": "80D6DA56",
+      "id": "4FF7A92D",
       "empresa": "CNEL EL ORO",
       "descripcion": "CONEXIÓN DE EQUIPOS PARA NUEVO ALIMENTADOR DE MEDIA TENSIÓN",
       "linea_subtransmision": "",
@@ -103,7 +137,7 @@
       "validado_director": false
     },
     {
-      "id": "BD228E0F",
+      "id": "0160EE5C",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (CAMBIO DE POSTES Y ESTRUCTURAS, LIMPIEZA DE VEGETACIÓN)",
       "linea_subtransmision": "",
@@ -137,7 +171,7 @@
       "validado_director": false
     },
     {
-      "id": "69A6FD1F",
+      "id": "11912DFA",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (MANTENIMIENTO A GABINETES DE DISTRIBUCIÓN) - CAMBIO DE SECCIONADORES EN TRANSICIÓN",
       "linea_subtransmision": "",
@@ -171,7 +205,7 @@
       "validado_director": false
     },
     {
-      "id": "83DF8C1D",
+      "id": "99AED8B7",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (MANTENIMIENTO A GABINETES DE DISTRIBUCIÓN) - INSTALACIÓN DE CUCHILLAS EN TRANSICIÓN",
       "linea_subtransmision": "",
@@ -205,7 +239,7 @@
       "validado_director": false
     },
     {
-      "id": "1FC386E3",
+      "id": "33001BCB",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CONEXIÓN DE ACOMETIDAS DE 69 KV PARA ENERGIZACIÓN EN VACÍO DEL TRANSFORMADOR EN PEDRO CARBO DE NUEVO TRANSFORMADOR DE POTENCIA, PARA LIBERAR SUBESTACIÓN MÓVIL",
       "linea_subtransmision": "",
@@ -239,7 +273,7 @@
       "validado_director": false
     },
     {
-      "id": "DC483417",
+      "id": "4B77B282",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "- CAMBIO DE TOPOLOGÍA LT1, LT2\n - INGRESO A BAHÍA LT1 CON NUEVA LÍNEA\n - TENDIDO DE GUARDA HACIA S/E CATALUÑA\n - DESMONTAJE DE SECCIONADOR EXISTENTE LT1\n - READECUACIÓN PARA CAMBIO EN LA CONEXIÓN A S/E MÓVIL CELEC\n - SECCIONAMENTO DE LÍNEA EXISTENTE DAULE-JB AGUIRRE",
       "linea_subtransmision": "DESCONEXIÓN DE LAS LÍNEAS LT1, LT2, LT3, LT4, LT5, MOVIL DE LA SUBESTACIÓN DOS CERRITOS SNT.",
@@ -273,7 +307,7 @@
       "validado_director": false
     },
     {
-      "id": "B308D18E",
+      "id": "1EC5A7CB",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "INTERCONEXION DE LA NUEVA LINEA DE SUBTRANSMISION BUENA FE PRONACA",
       "linea_subtransmision": "BUENA FE - PRONACA",
@@ -307,7 +341,7 @@
       "validado_director": false
     },
     {
-      "id": "85852F21",
+      "id": "62847051",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "'- CAMBIO DE TOPOLOGÍA LT5\n- COMPLETAR INGRESO A BAHÍA LT1 CON NUEVA LÍNEA\n- PUESTA EN OPERACIÓN NUEVO SECCIONADOR LT1\n- SECCIONAMENTO DE LÍNEA EXISTENTE DAULE-JB AGUIRRE\n- ENERGIZACIÓN DE NUEVA LT1 Y TOMA DE CARGA",
       "linea_subtransmision": "DESCONEXIÓN DE LA LÍNEA LT5 DE LA SUBESTACIÓN DOS CERRITOS SNT.",
@@ -341,7 +375,7 @@
       "validado_director": false
     },
     {
-      "id": "328261B7",
+      "id": "75E43E86",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CORRECCIÓN DE ANOMALÍA TÉRMICA EN ENTRADA DEL TRANSFORMADOR DE CORRIENTE, FASE C, ANOMALÍA TÉRMICA EN SECCIONADOR TIPO BARRA CON PUNTO CALIENTE EN FASES A Y C. (EL1 Y E3), ANOMALÍA TÉRMICA EN SECCIONADOR TIPO BARRAS DEL ALIMENTADOR PANORAMA DEL PATIO A, ANOMALÍA TÉRMICA EN CONECTOR DE FASE B DE LÍNEA DE SUBTRANSMISIÓN QUE ENERGIZA PATIO A DE SUBESTACIÓN RECREO. ANOMALÍA TÉRMICA EN EL CONDUCTOR DE LA FASE C. (REEMPLAZO DE PERNOS OXIDADOS), MANTENIMIENTO AL PATIO AÉREO A 69KV DEL GIS 3S DE LA SUBESTACIÓN EL RECREO.",
       "linea_subtransmision": "",
@@ -375,7 +409,7 @@
       "validado_director": false
     },
     {
-      "id": "0EB5D85E",
+      "id": "6485DE03",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "REEMPLAZO DE SECCIONADORES TRIPOLARES DE POSICIÓN DE BARRA, BARRA DE TRANSFERENCIA Y ACOPLE DE POSICIÓN PASCULAES MANGLERO",
       "linea_subtransmision": "MANGLERO",
@@ -409,7 +443,7 @@
       "validado_director": false
     },
     {
-      "id": "731425DE",
+      "id": "B07DBCF8",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "APLOME DE POSTES EN LA LLEGADA A LA SUBESTACION DAULE SUR - POSTE DONDE SE TIENE UBICADO EL SECCIONAMIENTO DE INTERCONEXION ENTRE LST DAULE Y TAP BANIFE",
       "linea_subtransmision": "TAP KUBIEC Y TAP BANIFE",
@@ -443,7 +477,7 @@
       "validado_director": false
     },
     {
-      "id": "E5C0E2ED",
+      "id": "57D8E85F",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CAMBIO DE POSTES EN MAL ESTADO",
       "linea_subtransmision": "",
@@ -477,7 +511,7 @@
       "validado_director": false
     },
     {
-      "id": "C522D3D7",
+      "id": "62A8105A",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "REEMPLAZO DE SECCIONADORES DE 69 KV EN POSICIÓN MANGLERO DE SUBESTACIÓN PASCUALES CELEC EP",
       "linea_subtransmision": "LST PASCUALES MANGLERO",
@@ -511,7 +545,7 @@
       "validado_director": false
     },
     {
-      "id": "440B0CB5",
+      "id": "802ADC5B",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE CONDUCTOR AISLADO SOTERRADO EN LAS SALIDAS DE LOS ALIMENTADORES VINCES CENTRO, VINCES SUR Y ANTONIO SOTOMAYOR, POR DESGASTE EN EL AISLAMIENTO DE LOS CONDUCTORES.",
       "linea_subtransmision": "",
@@ -545,7 +579,7 @@
       "validado_director": false
     },
     {
-      "id": "33047F1F",
+      "id": "AD752FD3",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CORRECCIÓN DE PUNTOS CALIENTES EN BUSHINGS DEL TRANSFORMADOR DE POTENCIA Y EN SECCIONAMIENTOS A NIVEL DE 13,8KV",
       "linea_subtransmision": "",
@@ -579,7 +613,7 @@
       "validado_director": false
     },
     {
-      "id": "BDAE2241",
+      "id": "FFBCC575",
       "empresa": "CNEL MANABÍ",
       "descripcion": "Cambio de aisladores, desbroce, reubicacion de postes",
       "linea_subtransmision": "ROCAFUERTE - CRUCITA",
@@ -613,7 +647,7 @@
       "validado_director": false
     },
     {
-      "id": "387F66C4",
+      "id": "A24A00A5",
       "empresa": "CNEL MANABÍ",
       "descripcion": "CORRECCION DE PUNTO CALIENTE Y CAMBIO DE SECCIONADOR BY PASS, 13.8 KV SE T3 PORTOVIEJO 1",
       "linea_subtransmision": "",
@@ -647,7 +681,7 @@
       "validado_director": false
     },
     {
-      "id": "A6F43818",
+      "id": "1AB45C05",
       "empresa": "CNEL MILAGRO",
       "descripcion": "ANOMALÍAS TÉRMICAS EN EL RECONECTADOR DE CABECERA VILLANUEVA 2, DISYUNTOR LLEGADA PUERTO INCA, SALIDA BALAO 4, DESBROCE VEGETACIÓN A NIVEL DE DISTRIBUCIÓN 13,8kV",
       "linea_subtransmision": "",
@@ -681,7 +715,7 @@
       "validado_director": false
     },
     {
-      "id": "9B314B51",
+      "id": "C21A421B",
       "empresa": "CNEL MILAGRO",
       "descripcion": "ANOMALÍAS TÉRMICAS EN ENTRADA AL SECCIONADOR DE BARRA FASE C Y EN SALIDA DEL SECCIONADOR DE BARRA FASE A",
       "linea_subtransmision": "",
@@ -715,7 +749,7 @@
       "validado_director": false
     },
     {
-      "id": "2664F168",
+      "id": "1176629C",
       "empresa": "CNEL MILAGRO",
       "descripcion": "ANOMALÍAS TÉRMICAS EN RECONECTADOR DE BARRAS, CT´S DE BARRAS, CAMBIO DE CONFIGURACIÓN DE ESTRUCTURAS EN POSTES ALEJADOS DE LA CARRETERA",
       "linea_subtransmision": "",
@@ -749,7 +783,7 @@
       "validado_director": false
     },
     {
-      "id": "E05B8003",
+      "id": "2F871640",
       "empresa": "CNEL SUCUMBÍOS",
       "descripcion": "CAMBIO DE CADENA DE AISLADORES EN FASE MEDIA, ESTRUCTURA N.º 102: POSTE DE HORMIGÓN EN SUSPENSIÓN",
       "linea_subtransmision": "JIVINO - SACHA",
@@ -783,7 +817,7 @@
       "validado_director": false
     },
     {
-      "id": "8096525B",
+      "id": "867850A7",
       "empresa": "CNEL SUCUMBÍOS",
       "descripcion": "CAMBIO DE POSTE DE HORMIGÓN EN MAL ESTADO DE 12 METROS",
       "linea_subtransmision": "",
@@ -817,7 +851,41 @@
       "validado_director": false
     },
     {
-      "id": "9F49E2FB",
+      "id": "1F74D889",
+      "empresa": "CNEL BOLIVAR",
+      "descripcion": "CORRECCIÓN DE PUNTO CALIENTE EN BARRAS DE 69 KV",
+      "linea_subtransmision": "",
+      "subestacion": "03_04_COCHABAMBA",
+      "alimentador": "",
+      "provincia": "BOLIVAR",
+      "canton": "SAN MIGUEL, CHILLANES",
+      "codigo_gis": "03CO04",
+      "tipo_trabajo": "Trabajos Correctivos",
+      "mw_desconectados": 1.22,
+      "fecha_inicio": "2026-06-06",
+      "hora_inicio": "03:00",
+      "fecha_fin": "2026-06-06",
+      "hora_fin": "06:00",
+      "valoracion": 400.0,
+      "presupuesto": 0.0,
+      "justificacion": "",
+      "etapa": "SUBESTACIÓN",
+      "clientes_afectados": 10655,
+      "clientes_totales": 10655,
+      "energia_kwh": 3660.0,
+      "usd_energia": 329.4,
+      "obs_adicionales": "",
+      "es_transelectric": false,
+      "estado": "pendiente",
+      "completado_por": "",
+      "fecha_hora_inicio_real": "",
+      "fecha_hora_fin_real": "",
+      "obs_ejecucion": "",
+      "trabajos_adicionales": "",
+      "validado_director": false
+    },
+    {
+      "id": "D9823F95",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (CAMBIO DE POSTES Y ESTRUCTURAS, LIMPIEZA DE VEGETACIÓN)",
       "linea_subtransmision": "",
@@ -851,7 +919,7 @@
       "validado_director": false
     },
     {
-      "id": "2C7A0EE3",
+      "id": "2228FFB0",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (CAMBIO DE POSTES Y ESTRUCTURAS, LIMPIEZA DE VEGETACIÓN)",
       "linea_subtransmision": "",
@@ -885,7 +953,7 @@
       "validado_director": false
     },
     {
-      "id": "6061AF6B",
+      "id": "054A27B6",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (CAMBIO DE POSTES Y ESTRUCTURAS, LIMPIEZA DE VEGETACIÓN)",
       "linea_subtransmision": "",
@@ -919,7 +987,7 @@
       "validado_director": false
     },
     {
-      "id": "417F4DD4",
+      "id": "30B64E9F",
       "empresa": "CNEL EL ORO",
       "descripcion": "MNTTO EN ALIMENTADOR PRIMARIO (RECONFIGURACIÓN DE LINEA DE MV, CAMBIO DE ESTRUCTURAS)",
       "linea_subtransmision": "",
@@ -930,9 +998,9 @@
       "codigo_gis": "07PO100T11",
       "tipo_trabajo": "Trabajos Preventivos",
       "mw_desconectados": 4.5,
-      "fecha_inicio": "2026-06-06",
+      "fecha_inicio": "2026-06-07",
       "hora_inicio": "07:00",
-      "fecha_fin": "2026-06-06",
+      "fecha_fin": "2026-06-07",
       "hora_fin": "10:00",
       "valoracion": 10344.65,
       "presupuesto": 0.0,
@@ -953,7 +1021,7 @@
       "validado_director": false
     },
     {
-      "id": "7461E698",
+      "id": "A750F87E",
       "empresa": "CNEL EL ORO",
       "descripcion": "MANTENIMIENTO PROGRAMADO POR EL TRANSMISOR EN LA L/T MACHALA - LA AVANZADA 230 kV C1",
       "linea_subtransmision": "",
@@ -987,7 +1055,7 @@
       "validado_director": false
     },
     {
-      "id": "1D59200F",
+      "id": "48FF7D6D",
       "empresa": "CNEL EL ORO",
       "descripcion": "MANTENIMIENTO PROGRAMADO POR EL TRANSMISOR EN LA L/T MACHALA - LA AVANZADA 230 kV C1",
       "linea_subtransmision": "",
@@ -1021,7 +1089,7 @@
       "validado_director": false
     },
     {
-      "id": "25C7F66E",
+      "id": "606790C2",
       "empresa": "CNEL EL ORO",
       "descripcion": "MANTENIMIENTO PROGRAMADO POR EL TRANSMISOR EN LA L/T MACHALA - LA AVANZADA 230 kV C1",
       "linea_subtransmision": "",
@@ -1055,7 +1123,7 @@
       "validado_director": false
     },
     {
-      "id": "FB22CEE6",
+      "id": "B1B39265",
       "empresa": "CNEL EL ORO",
       "descripcion": "MANTENIMIENTO PROGRAMADO POR EL TRANSMISOR EN LA L/T MACHALA - LA AVANZADA 230 kV C1",
       "linea_subtransmision": "",
@@ -1089,7 +1157,7 @@
       "validado_director": false
     },
     {
-      "id": "2EB6AE66",
+      "id": "A01CF4BB",
       "empresa": "CNEL EL ORO",
       "descripcion": "MANTENIMIENTO PROGRAMADO POR EL TRANSMISOR EN LA L/T MACHALA - LA AVANZADA 230 kV C1",
       "linea_subtransmision": "",
@@ -1123,7 +1191,7 @@
       "validado_director": false
     },
     {
-      "id": "15542FD2",
+      "id": "D40D4856",
       "empresa": "CNEL EL ORO",
       "descripcion": "MANTENIMIENTO PROGRAMADO POR EL TRANSMISOR EN LA L/T MACHALA - LA AVANZADA 230 kV C1",
       "linea_subtransmision": "",
@@ -1157,7 +1225,7 @@
       "validado_director": false
     },
     {
-      "id": "F6C2D39A",
+      "id": "9A0660BE",
       "empresa": "CNEL ESMERALDAS",
       "descripcion": "TRABAJO CONTRTADO MANTENIMIENTO DE TRANSFORMADOR DE POTENCIA EN FRÍO (pruebas electricas, ajuste de terminales, pernos conexiones, pintura etc.) Subestación Viche",
       "linea_subtransmision": "",
@@ -1191,7 +1259,7 @@
       "validado_director": false
     },
     {
-      "id": "B77DA1FC",
+      "id": "4C597FAF",
       "empresa": "CNEL ESMERALDAS",
       "descripcion": "TRABAJOS DE MANTENIMIENTO PROGRAMADO LST PRADERA - ATACAMES, TRABAJOS DESBROCE DE VEGETACION Y TALA DE ARBOLES CERCANOS A LA RED",
       "linea_subtransmision": "PRADERA - ATACAMES",
@@ -1225,7 +1293,7 @@
       "validado_director": false
     },
     {
-      "id": "9994170D",
+      "id": "26A20C8E",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "TOMA DE CARGA DEL TRANSFORMADOR DE NUEVO TRANSFORMADOR DE POTENCIA EN PEDRO CARBO, PARA LIBERAR SUBESTACIÓN MÓVIL",
       "linea_subtransmision": "",
@@ -1259,7 +1327,7 @@
       "validado_director": false
     },
     {
-      "id": "5A096EF5",
+      "id": "6B5A8995",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "DESCONEXIÓN CNEL 2, CNEL 3, CNEL 4 PARA CAMBIO DE TOPOLOGIA Y REPOTENCIACIÓN DE LÍNEA DE SUBTRANSMIÓN HOSPITAL DURÁN - DURÁN SUR",
       "linea_subtransmision": "CNEL 2, CNEL 3, CNEL 4",
@@ -1293,7 +1361,7 @@
       "validado_director": false
     },
     {
-      "id": "C5532B0F",
+      "id": "995C22B9",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CAMBIO DE ESTRUPTURAS Y CORRECCION DE ANOMALIAS TERMICAS",
       "linea_subtransmision": "",
@@ -1327,7 +1395,7 @@
       "validado_director": false
     },
     {
-      "id": "C5437D0F",
+      "id": "B4FB65F1",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CONSTRUCCION DE RED DE MEDIA TENSION SEGÚN CONTRATO CNEL-GLR-AJ-2025-022 “GLR REPOTENCIACIÓN DEL\n ALIMENTADOR VALENCIA ETAPA 1 TRAMO LA ESPERANZA HASTA EL SECCIONAMIENTO MARÍA\n FERNANDA, VÍA AL VERGEL GD”",
       "linea_subtransmision": "",
@@ -1361,7 +1429,7 @@
       "validado_director": false
     },
     {
-      "id": "FEEBAA1A",
+      "id": "0DF07D44",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CORRECCION DE ANOMALIAS TERMICAS EN LA SUBESTACION EL ROSARIO",
       "linea_subtransmision": "",
@@ -1395,7 +1463,7 @@
       "validado_director": false
     },
     {
-      "id": "D67E413E",
+      "id": "5E729BBB",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CORRECCION DE ANOMALIAS TERMICAS EN LA SUBESTACION MOCACHE",
       "linea_subtransmision": "",
@@ -1429,7 +1497,7 @@
       "validado_director": false
     },
     {
-      "id": "3D701117",
+      "id": "7D007589",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CORRECCION DE ANOMALIAS TERMICAS EN LA SUBESTACION QUEVEDO SUR",
       "linea_subtransmision": "",
@@ -1463,7 +1531,7 @@
       "validado_director": false
     },
     {
-      "id": "BE070F19",
+      "id": "E9CEB088",
       "empresa": "CNEL GUAYAS LOS RIOS",
       "descripcion": "CORRECCION DE ANOMALIAS TERMICAS EN LA SUBESTACION VALENCIA",
       "linea_subtransmision": "",
@@ -1497,7 +1565,7 @@
       "validado_director": false
     },
     {
-      "id": "E99BA58B",
+      "id": "6877EC7C",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE SECCIONADORES TIPO TANDEM DEL ALIMENTADOR PROGRESO EN MAL ESTADO, CAMBIO DE SECCIONADOR DEL TRANSFORAMDOR DE SERVICIOS AUXILIARES, CORRECCIÓN DE FUGA DE ACEITE EN TRANSFORMADOR DE POTENCIA, LLENADO DE GAS SF6 EN INTERRUPTOR PRINCIPAL DEL TRANSFORMADOR DE POTENCIA",
       "linea_subtransmision": "",
@@ -1531,7 +1599,7 @@
       "validado_director": false
     },
     {
-      "id": "3AA99144",
+      "id": "DC36818F",
       "empresa": "CNEL MANABÍ",
       "descripcion": "Cambio de poste, aisladores y desbroce",
       "linea_subtransmision": "",
@@ -1541,7 +1609,7 @@
       "canton": "MANTA",
       "codigo_gis": "11M4150T11",
       "tipo_trabajo": "Trabajos Preventivos",
-      "mw_desconectados": 5.3,
+      "mw_desconectados": 3.8,
       "fecha_inicio": "2026-06-07",
       "hora_inicio": "03:00",
       "fecha_fin": "2026-06-07",
@@ -1565,7 +1633,7 @@
       "validado_director": false
     },
     {
-      "id": "8359E92E",
+      "id": "2EFE6610",
       "empresa": "CNEL MILAGRO",
       "descripcion": "ANOMALÍAS TÉRMICAS EN CT DE BARRA,INTERRUPTOR Y SECCIONADOR DE BARRA 13,8kV, MONTAJE DE NUEVOS CT´S PARA MEDICIÓN Y PROTECCIÓN, REAJUSTE EN RECONECTADORES DE SALIDAS",
       "linea_subtransmision": "",
@@ -1599,7 +1667,7 @@
       "validado_director": false
     },
     {
-      "id": "919A3D11",
+      "id": "A896C8F4",
       "empresa": "CNEL MILAGRO",
       "descripcion": "ANOMALÍAS TÉRMICAS EN SECCIONADORES DE ENTRADA ALIMENTADORES,  CAMBIO DE HERRAJES EN EQUIPOS DE SUBESTACIÓN, CAMBIO DE SECCIONADORES QUE PRESENTAN PUNTOS CALIENTES.",
       "linea_subtransmision": "",
@@ -1633,7 +1701,7 @@
       "validado_director": false
     },
     {
-      "id": "437DE816",
+      "id": "99F12BAB",
       "empresa": "CNEL SUCUMBÍOS",
       "descripcion": "MANTENIMIENTO PREVENTIVO DE LOS CUADROS DE 13.8KV Y 69KV EN LA S/E PAYAMINO",
       "linea_subtransmision": "",
@@ -1667,7 +1735,7 @@
       "validado_director": false
     },
     {
-      "id": "136FF922",
+      "id": "46F5F60E",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "MANTENIMIENTO AL TRANSFORMADOR DE POTENCIA, BARRAJE A 13,8KV Y CAMBIO DE INTERRUPTOR PRINCIPAL DE 13,8KV Y SECCIONAMIENTOS DE LOS ALIMENTADORES",
       "linea_subtransmision": "",
@@ -1701,7 +1769,7 @@
       "validado_director": false
     },
     {
-      "id": "852983E6",
+      "id": "05B3573A",
       "empresa": "CNEL MANABÍ",
       "descripcion": "Puesta en operación del T2 en subestacion Lodana, trabajos en subtransmision de cambio de cadenas de aisladores y correccion de puntos calientes",
       "linea_subtransmision": "PORTOVIEJO CELEC L6 - LODANA",
@@ -1711,7 +1779,7 @@
       "canton": "PORTOVIEJO",
       "codigo_gis": "LST",
       "tipo_trabajo": "Trabajos Preventivos",
-      "mw_desconectados": 22.0,
+      "mw_desconectados": 32.0,
       "fecha_inicio": "2026-06-06",
       "hora_inicio": "06:00",
       "fecha_fin": "2026-06-06",
@@ -1735,75 +1803,7 @@
       "validado_director": false
     },
     {
-      "id": "A4E0F2D5",
-      "empresa": "CNEL BOLIVAR",
-      "descripcion": "CONSTRUCCION DE RED DE MEDIO VOLTAJE Y MONTAJE DE TRANSFORMADOR",
-      "linea_subtransmision": "",
-      "subestacion": "03_03_ECHEANDIA",
-      "alimentador": "03_03_Echeandia 1",
-      "provincia": "BOLIVAR",
-      "canton": "ECHEANDIA",
-      "codigo_gis": "03EC030T13",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 0.19,
-      "fecha_inicio": "2026-05-30",
-      "hora_inicio": "01:00",
-      "fecha_fin": "2026-05-30",
-      "hora_fin": "04:00",
-      "valoracion": 14500.0,
-      "presupuesto": 0.0,
-      "justificacion": "",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 350,
-      "clientes_totales": 350,
-      "energia_kwh": 570.0,
-      "usd_energia": 51.3,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "C6E58ADE",
-      "empresa": "CNEL BOLIVAR",
-      "descripcion": "CORRECCIÓN DE PUNTO CALIENTE EN BARRAS DE 69 KV",
-      "linea_subtransmision": "",
-      "subestacion": "03_04_COCHABAMBA",
-      "alimentador": "",
-      "provincia": "BOLIVAR",
-      "canton": "SAN MIGUEL, CHILLANES",
-      "codigo_gis": "03CO04",
-      "tipo_trabajo": "Trabajos Correctivos",
-      "mw_desconectados": 1.22,
-      "fecha_inicio": "2026-06-06",
-      "hora_inicio": "03:00",
-      "fecha_fin": "2026-06-06",
-      "hora_fin": "06:00",
-      "valoracion": 400.0,
-      "presupuesto": 0.0,
-      "justificacion": "",
-      "etapa": "SUBESTACIÓN",
-      "clientes_afectados": 10655,
-      "clientes_totales": 20000,
-      "energia_kwh": 3660.0,
-      "usd_energia": 329.4,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "85358895",
+      "id": "86BCCB26",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "CAMBIO DE ESTRUCTURAS DE MEDIA TENSIÓN",
       "linea_subtransmision": "",
@@ -1823,7 +1823,7 @@
       "justificacion": "Trabajos en área rural, se consideró horario de menor impacto",
       "etapa": "ALIMENTADOR",
       "clientes_afectados": 350,
-      "clientes_totales": 350,
+      "clientes_totales": 0,
       "energia_kwh": 540.0,
       "usd_energia": 48.6,
       "obs_adicionales": "",
@@ -1837,7 +1837,7 @@
       "validado_director": false
     },
     {
-      "id": "D27BDDEB",
+      "id": "9B0E0890",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "CAMBIO DE ESTRUCTURAS DE MEDIA TENSIÓN",
       "linea_subtransmision": "",
@@ -1857,7 +1857,7 @@
       "justificacion": "Trabajos en área rural, se consideró horario de menor impacto",
       "etapa": "ALIMENTADOR",
       "clientes_afectados": 1351,
-      "clientes_totales": 1351,
+      "clientes_totales": 0,
       "energia_kwh": 720.0,
       "usd_energia": 64.8,
       "obs_adicionales": "",
@@ -1871,7 +1871,7 @@
       "validado_director": false
     },
     {
-      "id": "43EACE90",
+      "id": "6C32257B",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "CAMBIO DE ESTRUCTURAS DE MEDIA TENSIÓN",
       "linea_subtransmision": "",
@@ -1891,7 +1891,7 @@
       "justificacion": "Trabajos en área rural, se consideró horario de menor impacto",
       "etapa": "ALIMENTADOR",
       "clientes_afectados": 2600,
-      "clientes_totales": 2600,
+      "clientes_totales": 0,
       "energia_kwh": 1920.0,
       "usd_energia": 172.79999999999998,
       "obs_adicionales": "",
@@ -1905,15 +1905,15 @@
       "validado_director": false
     },
     {
-      "id": "90EA6F78",
+      "id": "F9394B27",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "DIVISIÓN DE CIRCUITOS EN MEDIA TENSIÓN",
       "linea_subtransmision": "",
       "subestacion": "",
-      "alimentador": "03_06_San José del Tambo",
+      "alimentador": "03_06_Chillanes",
       "provincia": "Bolívar",
       "canton": "Chillanes",
-      "codigo_gis": "03SI060T13",
+      "codigo_gis": "03SI060T11",
       "tipo_trabajo": "Trabajos Correctivos",
       "mw_desconectados": 0.085,
       "fecha_inicio": "2026-05-30",
@@ -1925,7 +1925,7 @@
       "justificacion": "Trabajos en área rural, se consideró horario de menor impacto",
       "etapa": "ALIMENTADOR",
       "clientes_afectados": 120,
-      "clientes_totales": 120,
+      "clientes_totales": 0,
       "energia_kwh": 169.99999999999997,
       "usd_energia": 15.299999999999997,
       "obs_adicionales": "",
@@ -1939,14 +1939,14 @@
       "validado_director": false
     },
     {
-      "id": "7B35FF08",
+      "id": "B58960F9",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "INCORPORACION DE RED DE MEDIA TENSIÓN",
       "linea_subtransmision": "",
       "subestacion": "",
       "alimentador": "03_06_San Pablo",
       "provincia": "Bolívar",
-      "canton": "Tambo",
+      "canton": "San Miguel",
       "codigo_gis": "03SI060T12",
       "tipo_trabajo": "Trabajos Correctivos",
       "mw_desconectados": 0.2,
@@ -1959,7 +1959,7 @@
       "justificacion": "Trabajos en área rural, se consideró horario de menor impacto",
       "etapa": "ALIMENTADOR",
       "clientes_afectados": 600,
-      "clientes_totales": 600,
+      "clientes_totales": 0,
       "energia_kwh": 600.0,
       "usd_energia": 54.0,
       "obs_adicionales": "",
@@ -1973,7 +1973,7 @@
       "validado_director": false
     },
     {
-      "id": "85CD4470",
+      "id": "CB4CA07F",
       "empresa": "CNEL BOLIVAR",
       "descripcion": "MONTAJE DE TRANSFORMADOR TRIFASICO Y TENDIDO DE RED PARA CENTRO DE RAYOS X",
       "linea_subtransmision": "",
@@ -1993,7 +1993,7 @@
       "justificacion": "",
       "etapa": "ALIMENTADOR",
       "clientes_afectados": 930,
-      "clientes_totales": 930,
+      "clientes_totales": 0,
       "energia_kwh": 1200.0,
       "usd_energia": 108.0,
       "obs_adicionales": "",
@@ -2007,7 +2007,7 @@
       "validado_director": false
     },
     {
-      "id": "DAD2BAB6",
+      "id": "E3B21A4C",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "ALIMENTADOR CATARAMA, DERIVACIÓN MONOFÁSICA HACIA SECTOR LOS SAUCES, CAMBIO Y REUBICACIÓN DE POSTES EN RED DE MEDIA Y BAJA TENSIÓN, MIGRACIÓN DE RED DESNUDA A TIPO PRENSAMBLADA EN BAJA TENSIÓN, CAMBIO DE AISLAMIENTO",
       "linea_subtransmision": "",
@@ -2041,7 +2041,7 @@
       "validado_director": false
     },
     {
-      "id": "3D7A4B6F",
+      "id": "8FED8537",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "ALIMENTADOR TRIFASICO PUEBLOVIEJO CAMBIO DE ESTRUCTURAS Y AISLAMIENTO DESDE ESTERO HONDO HACIA PUERTO PECHICHE,",
       "linea_subtransmision": "",
@@ -2075,7 +2075,7 @@
       "validado_director": false
     },
     {
-      "id": "B669D3AA",
+      "id": "69157DF9",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE AISLADORES,ESTRUCTURAS Y POSTES",
       "linea_subtransmision": "",
@@ -2109,7 +2109,7 @@
       "validado_director": false
     },
     {
-      "id": "FD0C2898",
+      "id": "BA8182FD",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE BAJANTES DE PREEMSAMBLADO E INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2143,7 +2143,7 @@
       "validado_director": false
     },
     {
-      "id": "FD0C28981",
+      "id": "82C385DD",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE BAJANTES DE PREEMSAMBLADO E INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2177,7 +2177,7 @@
       "validado_director": false
     },
     {
-      "id": "FD0C28981",
+      "id": "85558996",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE BAJANTES DE PREEMSAMBLADO E INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2211,7 +2211,7 @@
       "validado_director": false
     },
     {
-      "id": "FD0C28981",
+      "id": "1EE2D8D8",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE BAJANTES DE PREEMSAMBLADO E INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2245,7 +2245,7 @@
       "validado_director": false
     },
     {
-      "id": "9666894A",
+      "id": "6C43075A",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE BAJANTES DE PREEMSAMBLADO E INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2279,7 +2279,7 @@
       "validado_director": false
     },
     {
-      "id": "08670218",
+      "id": "C29E5280",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE BAJANTES DE PREEMSAMBLADO E INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2313,7 +2313,7 @@
       "validado_director": false
     },
     {
-      "id": "0CE17EF6",
+      "id": "59BB1899",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE ESTRUCTURAS Y AISLAMIENTO EN ALIM. ZAPOTAL",
       "linea_subtransmision": "",
@@ -2347,7 +2347,7 @@
       "validado_director": false
     },
     {
-      "id": "2BA526D2",
+      "id": "9474706B",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "CAMBIO DE RED CONVENCIONAL A RED PREENSAMBLADA EN CIRCUITO DE RED DE BAJA TENSION, QUINSALOMA, AV. 3 DE MAYO Y CALLE SIMON BOLIVAR",
       "linea_subtransmision": "",
@@ -2381,7 +2381,7 @@
       "validado_director": false
     },
     {
-      "id": "7AE431DE",
+      "id": "9AAC3D99",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE ESTRIBO, PUESTA TIERRA Y CAMBIO DE BAJANTES DE PREEMSAMBLADO POR ESTAR EN MAL ESTADO",
       "linea_subtransmision": "",
@@ -2415,7 +2415,7 @@
       "validado_director": false
     },
     {
-      "id": "58A1E05B",
+      "id": "4B73CE74",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE ESTRIBO, PUESTA TIERRA Y CAMBIO DE BAJANTES DE PREEMSAMBLADO.",
       "linea_subtransmision": "",
@@ -2449,7 +2449,7 @@
       "validado_director": false
     },
     {
-      "id": "189351D4",
+      "id": "3364CEA1",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE PUESTA TIERRA",
       "linea_subtransmision": "",
@@ -2483,7 +2483,7 @@
       "validado_director": false
     },
     {
-      "id": "59ADAA86",
+      "id": "9BF9AD5D",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE PUESTA TIERRA Y CAMBIO DE BAJANTES DE COBRE POR MAL ESTADO",
       "linea_subtransmision": "",
@@ -2517,7 +2517,7 @@
       "validado_director": false
     },
     {
-      "id": "A61CDF73",
+      "id": "556FA3F3",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE PUESTA TIERRA Y SECCIONADOR",
       "linea_subtransmision": "",
@@ -2551,7 +2551,7 @@
       "validado_director": false
     },
     {
-      "id": "A61CDF731",
+      "id": "BFFDA232",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE PUESTA TIERRA Y SECCIONADOR",
       "linea_subtransmision": "",
@@ -2585,7 +2585,7 @@
       "validado_director": false
     },
     {
-      "id": "B084CC30",
+      "id": "F466ED26",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE SECCIONADOR, ESTRIBO, PUESTA TIERRA Y CAMBIO DE BAJANTES DE COBRE POR MAL ESTADO",
       "linea_subtransmision": "",
@@ -2619,7 +2619,7 @@
       "validado_director": false
     },
     {
-      "id": "4FB70853",
+      "id": "ADDD6767",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE SECCIONADOR, PUESTA TIERRA Y CAMBIO DE BAJANTES DE PREEMSAMBLADO POR ESTAR EN MAL ESTADO",
       "linea_subtransmision": "",
@@ -2653,7 +2653,7 @@
       "validado_director": false
     },
     {
-      "id": "F4771D0C",
+      "id": "89FB344F",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "INSTALACION DE SECCIONADOR, PUESTA TIERRA Y CAMBIO DE BAJANTES DE PREEMSAMBLADO.",
       "linea_subtransmision": "",
@@ -2687,7 +2687,7 @@
       "validado_director": false
     },
     {
-      "id": "75BADC5E",
+      "id": "C82F122E",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "SE DEBE REALIZAR EL CAMBIO DE LA BAJANTES DE COBRE POR MAL ESTADO",
       "linea_subtransmision": "",
@@ -2721,7 +2721,7 @@
       "validado_director": false
     },
     {
-      "id": "75BADC5E1",
+      "id": "880821A9",
       "empresa": "CNEL LOS RIOS",
       "descripcion": "SE DEBE REALIZAR EL CAMBIO DE LA BAJANTES DE COBRE POR MAL ESTADO",
       "linea_subtransmision": "",
@@ -2755,7 +2755,75 @@
       "validado_director": false
     },
     {
-      "id": "8C3041AE",
+      "id": "B5E99315",
+      "empresa": "CNEL ESMERALDAS",
+      "descripcion": "DESCONEXION PROGRAMADA PARA REALIZAR TRABAJOS DE CONSTRUCCION, ESTRUCTURADO DE POSTES, TENDIDO Y AMARRADO DE CONDUCTOR 4/0 AWG, TRABAJOS PLANIFICADOS SERAN EJECUTADOS CON LA FINALIDAD DE GARANTIZAR LA CALIDAD DEL SERVICIO",
+      "linea_subtransmision": "",
+      "subestacion": "",
+      "alimentador": "CHAMANGA",
+      "provincia": "ESMERALDAS",
+      "canton": "MUISNE",
+      "codigo_gis": "08SA120T12",
+      "tipo_trabajo": "Ingreso Nuevas Cargas",
+      "mw_desconectados": 0.6,
+      "fecha_inicio": "2026-05-30",
+      "hora_inicio": "14:00",
+      "fecha_fin": "2026-05-30",
+      "hora_fin": "17:00",
+      "valoracion": 290410.31,
+      "presupuesto": 0.0,
+      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
+      "etapa": "ALIMENTADOR",
+      "clientes_afectados": 1285,
+      "clientes_totales": 1285,
+      "energia_kwh": 1800.0,
+      "usd_energia": 162.0,
+      "obs_adicionales": "",
+      "es_transelectric": false,
+      "estado": "pendiente",
+      "completado_por": "",
+      "fecha_hora_inicio_real": "",
+      "fecha_hora_fin_real": "",
+      "obs_ejecucion": "",
+      "trabajos_adicionales": "",
+      "validado_director": false
+    },
+    {
+      "id": "DEBC12E0",
+      "empresa": "CNEL ESMERALDAS",
+      "descripcion": "DESCONEXION PROGRAMADA PARA REALIZAR TRABAJOS DE CONSTRUCCION, ESTRUCTURADO DE POSTES, TENDIDO Y AMARRADO DE CONDUCTOR 4/0 AWG, TRABAJOS PLANIFICADOS SERAN EJECUTADOS CON LA FINALIDAD DE GARANTIZAR LA CALIDAD DEL SERVICIO",
+      "linea_subtransmision": "",
+      "subestacion": "",
+      "alimentador": "CHAMANGA",
+      "provincia": "ESMERALDAS",
+      "canton": "MUISNE",
+      "codigo_gis": "08SA120T12",
+      "tipo_trabajo": "Ingreso Nuevas Cargas",
+      "mw_desconectados": 0.6,
+      "fecha_inicio": "2026-05-31",
+      "hora_inicio": "14:00",
+      "fecha_fin": "2026-05-31",
+      "hora_fin": "17:00",
+      "valoracion": 290410.31,
+      "presupuesto": 0.0,
+      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
+      "etapa": "ALIMENTADOR",
+      "clientes_afectados": 1285,
+      "clientes_totales": 1285,
+      "energia_kwh": 1800.0,
+      "usd_energia": 162.0,
+      "obs_adicionales": "",
+      "es_transelectric": false,
+      "estado": "pendiente",
+      "completado_por": "",
+      "fecha_hora_inicio_real": "",
+      "fecha_hora_fin_real": "",
+      "obs_ejecucion": "",
+      "trabajos_adicionales": "",
+      "validado_director": false
+    },
+    {
+      "id": "5896E496",
       "empresa": "CNEL ESMERALDAS",
       "descripcion": "DESCONEXION PROGRAMADA PARA REALIZAR TRABAJOS DE CONSTRUCCION, ESTRUCTURADO DE POSTES, TENDIDO Y AMARRADO DE CONDUCTOR 4/0 AWG, TRABAJOS PLANIFICADOS SERAN EJECUTADOS CON LA FINALIDAD DE GARANTIZAR LA CALIDAD DEL SERVICIO",
       "linea_subtransmision": "",
@@ -2789,7 +2857,7 @@
       "validado_director": false
     },
     {
-      "id": "B8737413",
+      "id": "A4A1FE2B",
       "empresa": "CNEL ESMERALDAS",
       "descripcion": "DESCONEXION PROGRAMADA PARA REALIZAR TRABAJOS DE CONSTRUCCION, ESTRUCTURADO DE POSTES, TENDIDO Y AMARRADO DE CONDUCTOR 4/0 AWG, TRABAJOS PLANIFICADOS SERAN EJECUTADOS CON LA FINALIDAD DE GARANTIZAR LA CALIDAD DEL SERVICIO",
       "linea_subtransmision": "",
@@ -2823,9 +2891,43 @@
       "validado_director": false
     },
     {
-      "id": "443CAD5C",
+      "id": "DEB2E977",
       "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "ROCAFUERTE Y M. J. CALLE: CAMBIO DE TRANSFORMADOR MONOFASICO DE 250KVA UBICADO EN BOVEDA. SE ABRIRA VIA 2 DE ROPERO UBICADO EN CUARTO ELECTRICO ROCAFUERTE Y M. J. CALLE",
+      "descripcion": "Mantenimiento a cuarto eléctrico",
+      "linea_subtransmision": "",
+      "subestacion": "",
+      "alimentador": "04_06_Centro Park",
+      "provincia": "Guayas",
+      "canton": "Guayaquil",
+      "codigo_gis": "04AY060T14",
+      "tipo_trabajo": "Trabajos Preventivos",
+      "mw_desconectados": 0.25,
+      "fecha_inicio": "2026-05-31",
+      "hora_inicio": "02:00",
+      "fecha_fin": "2026-05-31",
+      "hora_fin": "05:00",
+      "valoracion": 5200.0,
+      "presupuesto": 22699.16,
+      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
+      "etapa": "ALIMENTADOR",
+      "clientes_afectados": 150,
+      "clientes_totales": 309,
+      "energia_kwh": 750.0,
+      "usd_energia": 67.5,
+      "obs_adicionales": "",
+      "es_transelectric": false,
+      "estado": "pendiente",
+      "completado_por": "",
+      "fecha_hora_inicio_real": "",
+      "fecha_hora_fin_real": "",
+      "obs_ejecucion": "",
+      "trabajos_adicionales": "",
+      "validado_director": false
+    },
+    {
+      "id": "8E2ADE21",
+      "empresa": "CNEL GUAYAQUIL",
+      "descripcion": "Mantenimiento a cuarto eléctrico",
       "linea_subtransmision": "",
       "subestacion": "",
       "alimentador": "04_09_Malecon",
@@ -2835,9 +2937,9 @@
       "tipo_trabajo": "Trabajos Preventivos",
       "mw_desconectados": 0.167,
       "fecha_inicio": "2026-05-31",
-      "hora_inicio": "00:30",
+      "hora_inicio": "02:00",
       "fecha_fin": "2026-05-31",
-      "hora_fin": "03:30",
+      "hora_fin": "05:00",
       "valoracion": 5100.0,
       "presupuesto": 22699.16,
       "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
@@ -2857,9 +2959,9 @@
       "validado_director": false
     },
     {
-      "id": "18C82EA0",
+      "id": "D7D89760",
       "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "ROCAFUERTE E IMBABURA: CAMBIO DE TRANSFORMADOR MONOFASICO DE 250KVA UBICADO EN BOVEDA. SE ABRIRA VIA 2 DE ROPERO UBICADO EN CUARTO ELECTRICO ROCAFUERTE E IMBABURA",
+      "descripcion": "Mantenimiento a cuarto eléctrico",
       "linea_subtransmision": "",
       "subestacion": "",
       "alimentador": "04_09_Rocafuerte",
@@ -2867,11 +2969,11 @@
       "canton": "Guayaquil",
       "codigo_gis": "04BO090T24",
       "tipo_trabajo": "Trabajos Preventivos",
-      "mw_desconectados": 0.4,
+      "mw_desconectados": 0.167,
       "fecha_inicio": "2026-05-31",
-      "hora_inicio": "05:30",
+      "hora_inicio": "02:00",
       "fecha_fin": "2026-05-31",
-      "hora_fin": "07:30",
+      "hora_fin": "05:00",
       "valoracion": 4950.0,
       "presupuesto": 22699.16,
       "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
@@ -2891,7 +2993,7 @@
       "validado_director": false
     },
     {
-      "id": "58F12197",
+      "id": "0FF346C9",
       "empresa": "CNEL MILAGRO",
       "descripcion": "ANOMALÍAS TÉRMICAS EN ENTRADA Y SALIDA DEL SECCIONADOR DEL ALIMENTADOR LORENZO DE GARAICOA, SALIDA MATA DE CACAO",
       "linea_subtransmision": "",
@@ -2925,7 +3027,7 @@
       "validado_director": false
     },
     {
-      "id": "0848FE3B",
+      "id": "281573C9",
       "empresa": "CNEL EL ORO",
       "descripcion": "CONEXIÓN DE BANCO DE CAPACITORES",
       "linea_subtransmision": "",
@@ -2959,7 +3061,7 @@
       "validado_director": false
     },
     {
-      "id": "86CAB05D",
+      "id": "96E834A5",
       "empresa": "CNEL EL ORO",
       "descripcion": "CONEXIÓN DE BANCO DE CAPACITORES",
       "linea_subtransmision": "",
@@ -2991,281 +3093,9 @@
       "obs_ejecucion": "",
       "trabajos_adicionales": "",
       "validado_director": false
-    },
-    {
-      "id": "DEFC1410",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "ROCAFUERTE Y ORELLANA: CAMBIO DE TRANSFORMADOR MONOFASICO DE 250KVA UBICADO EN BOVEDA, SE ABRIRA VIA 2 DE ROPERO UBICADO EN CUARTO ELECTRICO ROCAFUERTE Y ORELLANA",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "04_09_Rocafuerte",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04BO090T24",
-      "tipo_trabajo": "Trabajos Preventivos",
-      "mw_desconectados": 0.4,
-      "fecha_inicio": "2026-05-31",
-      "hora_inicio": "03:30",
-      "fecha_fin": "2026-05-31",
-      "hora_fin": "05:30",
-      "valoracion": 0.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 150,
-      "clientes_totales": 518,
-      "energia_kwh": 799.9999999999998,
-      "usd_energia": 71.99999999999997,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "C9A4C075",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Repotenciación de líneas para el ingreso de la nueva subestación Ciudad Colon.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "PLAZA DAÑIN",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04AM030T12",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 1.97,
-      "fecha_inicio": "2026-05-31",
-      "hora_inicio": "01:30",
-      "fecha_fin": "2026-05-31",
-      "hora_fin": "04:30",
-      "valoracion": 1300.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 1118,
-      "clientes_totales": 4778,
-      "energia_kwh": 5910.0,
-      "usd_energia": 531.9,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "AF3417CF",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Repotenciación de líneas para el ingreso de la nueva subestación Ciudad Colon.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "JOSÉ CASTILLO",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04KN220T13",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 1.0,
-      "fecha_inicio": "2026-05-30",
-      "hora_inicio": "01:30",
-      "fecha_fin": "2026-05-30",
-      "hora_fin": "04:30",
-      "valoracion": 2600.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 120,
-      "clientes_totales": 2374,
-      "energia_kwh": 3000.0,
-      "usd_energia": 270.0,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "1FC4219A",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Repotenciación de líneas por la construcción de la nueva alimentadora en Mi Lote 3.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "MI LOTE 1",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04MI460T11",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 2.3,
-      "fecha_inicio": "2026-05-31",
-      "hora_inicio": "00:00",
-      "fecha_fin": "2026-05-31",
-      "hora_fin": "03:00",
-      "valoracion": 750.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 472,
-      "clientes_totales": 6519,
-      "energia_kwh": 6900.0,
-      "usd_energia": 621.0,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "6924617E",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Reposición de conductor de MT.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "04_34_Torre #6",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04TO340T21",
-      "tipo_trabajo": "Trabajos Preventivos",
-      "mw_desconectados": 2.0,
-      "fecha_inicio": "2026-06-06",
-      "hora_inicio": "07:30",
-      "fecha_fin": "2026-06-06",
-      "hora_fin": "10:30",
-      "valoracion": 7614.3,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 3221,
-      "clientes_totales": 10286,
-      "energia_kwh": 6000.0,
-      "usd_energia": 540.0,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "9A31DEAE",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Repotenciación de líneas para el ingreso de la nueva subestación Ciudad Colon.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "PLAZA DAÑIN",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04AM030T12",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 2.1,
-      "fecha_inicio": "2026-06-06",
-      "hora_inicio": "01:30",
-      "fecha_fin": "2026-06-06",
-      "hora_fin": "04:30",
-      "valoracion": 3100.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 1118,
-      "clientes_totales": 4778,
-      "energia_kwh": 5910.0,
-      "usd_energia": 531.9,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "5E77EC13",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Repotenciación de líneas por la construcción de la nueva alimentadora en Calicuchima 3.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "TORRE 1",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04TO340T13",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 2.01,
-      "fecha_inicio": "2026-06-06",
-      "hora_inicio": "01:30",
-      "fecha_fin": "2026-06-06",
-      "hora_fin": "04:30",
-      "valoracion": 1200.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 2048,
-      "clientes_totales": 6475,
-      "energia_kwh": 6030.0,
-      "usd_energia": 542.7,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
-    },
-    {
-      "id": "8E1FD33C",
-      "empresa": "CNEL GUAYAQUIL",
-      "descripcion": "Repotenciación de líneas para el ingreso de la nueva subestación Ciudad Colon.",
-      "linea_subtransmision": "",
-      "subestacion": "",
-      "alimentador": "TANCA MARENGO",
-      "provincia": "Guayas",
-      "canton": "Guayaquil",
-      "codigo_gis": "04KN220T13",
-      "tipo_trabajo": "Ingreso Nuevas Cargas",
-      "mw_desconectados": 1.7,
-      "fecha_inicio": "2026-06-07",
-      "hora_inicio": "01:30",
-      "fecha_fin": "2026-06-07",
-      "hora_fin": "04:30",
-      "valoracion": 2600.0,
-      "presupuesto": 0.0,
-      "justificacion": "HORARIO DE MENOR IMPACTO HACIA LOS USUARIOS POR DESLASTRE DE CARGA EN DEMANDA MINIMA",
-      "etapa": "ALIMENTADOR",
-      "clientes_afectados": 1980,
-      "clientes_totales": 8840,
-      "energia_kwh": 900.0,
-      "usd_energia": 81.0,
-      "obs_adicionales": "",
-      "es_transelectric": false,
-      "estado": "pendiente",
-      "completado_por": "",
-      "fecha_hora_inicio_real": "",
-      "fecha_hora_fin_real": "",
-      "obs_ejecucion": "",
-      "trabajos_adicionales": "",
-      "validado_director": false
     }
   ],
-  "generado": "2026-05-29T17:18:55.798945",
-  "fuente": "CORP Mantenimientos planificados CNEL EP 30-31 mayo y 6-7junio VERSION 29mayo.xlsx",
-  "total": 96
+  "generado": "2026-05-29T22:36:49.958106",
+  "fuente": "Mantenimientos_planificados_CNEL_EP_30-31_mayo_y_6-7junio_vfinal.xlsx",
+  "total": 91
 }
