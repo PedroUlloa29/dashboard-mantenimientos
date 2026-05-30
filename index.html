@@ -632,28 +632,86 @@ const USERS = {
 };
 
 const SESSION_KEY = 'cnel_session';
+
+// ── JSONBIN CONFIG — base de datos en la nube para seguimiento compartido ──
+const JSONBIN_ID  = '6a1a4df521f9ee59d29c6dee';
+const JSONBIN_KEY = '$2a$10$tunBNsOyFhSDdfZ0YLn/HeLSQBuHzGH/WRj/VWQJM1lwBhrNFMHdi';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
 let filteredUnit=[], filteredAll=[];
 let sortFieldUnit='fecha_inicio', sortDirUnit=1;
 let sortFieldAll='fecha_inicio', sortDirAll=1;
 
 async function loadData(){
   try{
+    // Mostrar indicador de carga
+    const grid = document.getElementById('unGrid');
+    if(grid) grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--text3)">⏳ Cargando datos...</div>';
+
     const r=await fetch('data.json');
     if(!r.ok) throw new Error('No se pudo cargar data.json');
     const j=await r.json();
     ALL=j.trabajos;
-    const saved=JSON.parse(localStorage.getItem('cnel_seg')||'{}');
-    ALL.forEach(t=>{if(saved[t.id]) Object.assign(t,saved[t.id]);});
+
+    // Cargar seguimiento desde la nube
+    await cargarSeguimiento();
+
     init();
   }catch(e){
     document.getElementById('unGrid').innerHTML=`<div style="padding:40px;color:#991b1b">Error: ${e.message}</div>`;
   }
 }
 
-function saveLocal(id,fields){
-  const s=JSON.parse(localStorage.getItem('cnel_seg')||'{}');
-  s[id]={...(s[id]||{}),...fields};
-  localStorage.setItem('cnel_seg',JSON.stringify(s));
+// Seguimiento en memoria (cache local)
+let seguimientoCache = {};
+let syncPending = false;
+
+async function cargarSeguimiento(){
+  try{
+    const r = await fetch(JSONBIN_URL+'/latest', {
+      headers: {'X-Master-Key': JSONBIN_KEY}
+    });
+    if(!r.ok) throw new Error('Error leyendo JSONBin');
+    const j = await r.json();
+    seguimientoCache = j.record.seguimiento || {};
+    // Aplicar a trabajos en memoria
+    ALL.forEach(t => {
+      if(seguimientoCache[t.id]) Object.assign(t, seguimientoCache[t.id]);
+    });
+  } catch(e){
+    console.warn('No se pudo cargar seguimiento de la nube:', e.message);
+    // Fallback a localStorage
+    seguimientoCache = JSON.parse(localStorage.getItem('cnel_seg')||'{}');
+    ALL.forEach(t => {
+      if(seguimientoCache[t.id]) Object.assign(t, seguimientoCache[t.id]);
+    });
+  }
+}
+
+async function guardarSeguimientoNube(){
+  try{
+    const r = await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY
+      },
+      body: JSON.stringify({seguimiento: seguimientoCache})
+    });
+    if(!r.ok) throw new Error('Error guardando en JSONBin');
+    // También guardar en localStorage como backup
+    localStorage.setItem('cnel_seg', JSON.stringify(seguimientoCache));
+  } catch(e){
+    console.warn('No se pudo guardar en la nube:', e.message);
+    // Al menos guardar en localStorage
+    localStorage.setItem('cnel_seg', JSON.stringify(seguimientoCache));
+  }
+}
+
+function saveLocal(id, fields){
+  seguimientoCache[id] = {...(seguimientoCache[id]||{}), ...fields};
+  localStorage.setItem('cnel_seg', JSON.stringify(seguimientoCache));
+  // Guardar en nube de forma asíncrona
+  guardarSeguimientoNube();
 }
 
 function syncUnitMwBtns(){
@@ -1418,7 +1476,15 @@ function guardar(id){
   if(idx!==-1) Object.assign(ALL[idx],u);
   saveLocal(id,u);
   const ind=document.getElementById('savedInd');
-  ind.classList.add('show'); setTimeout(()=>ind.classList.remove('show'),2500);
+  ind.textContent='⏳ Guardando...';
+  ind.classList.add('show');
+  guardarSeguimientoNube().then(()=>{
+    ind.textContent='✓ Guardado y sincronizado';
+    setTimeout(()=>{ ind.classList.remove('show'); ind.textContent='✓ Guardado correctamente'; },2500);
+  }).catch(()=>{
+    ind.textContent='⚠ Guardado local (sin conexión)';
+    setTimeout(()=>{ ind.classList.remove('show'); ind.textContent='✓ Guardado correctamente'; },3000);
+  });
   if(currentView==='unit') applyUnitFilters();
   else if(currentView==='all') applyAllFilters();
   else renderHome();
