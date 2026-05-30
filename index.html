@@ -316,6 +316,13 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
   padding:3px 9px;transition:all .15s;
 }
 .logout-btn:hover{color:var(--red);border-color:var(--red-bd);background:var(--red-bg)}
+.refresh-btn{
+  font-size:11px;font-weight:600;cursor:pointer;color:var(--accent);
+  background:none;border:1px solid var(--accent);border-radius:4px;
+  padding:3px 9px;transition:all .15s;display:flex;align-items:center;gap:4px;
+}
+.refresh-btn:hover{background:var(--accent);color:#fff}
+.refresh-btn.loading{opacity:.6;cursor:not-allowed;pointer-events:none}
 .gerencia-badge{
   font-size:11px;font-weight:600;color:var(--green);
   background:var(--green-bg);border:1px solid var(--green-bd);
@@ -380,6 +387,10 @@ td.num{font-family:var(--mono);font-size:12px;text-align:right}
   </div>
   <div class="header-right" style="gap:10px">
     <span class="period-badge" id="periodBadge">Cargando...</span>
+    <span id="lastUpdate" style="font-size:10px;color:var(--text3)"></span>
+    <button class="refresh-btn" id="btnRefresh" onclick="actualizarSeguimiento()" title="Actualizar seguimiento">
+      🔄 Actualizar
+    </button>
     <span id="headerUserBadge"></span>
     <button class="logout-btn" id="btnLogout" onclick="doLogout()" title="Cerrar sesión">⏻ Salir</button>
   </div>
@@ -666,6 +677,16 @@ async function loadData(){
     // Cargar seguimiento desde la nube
     await cargarSeguimiento();
 
+    // Set initial update time
+    setTimeout(()=>{
+      const lbl = document.getElementById('lastUpdate');
+      if(lbl){
+        const now = new Date();
+        const hora = now.toLocaleTimeString('es-EC',{hour:'2-digit',minute:'2-digit'});
+        lbl.textContent = `Actualizado ${hora}`;
+      }
+    }, 100);
+
     init();
   }catch(e){
     document.getElementById('unGrid').innerHTML=`<div style="padding:40px;color:#991b1b">Error: ${e.message}</div>`;
@@ -679,18 +700,24 @@ let syncPending = false;
 async function cargarSeguimiento(){
   try{
     const r = await fetch(JSONBIN_URL+'/latest', {
-      headers: {'X-Master-Key': JSONBIN_KEY}
+      headers: {
+        'X-Master-Key': JSONBIN_KEY,
+        'Cache-Control': 'no-cache'
+      }
     });
-    if(!r.ok) throw new Error('Error leyendo JSONBin');
+    if(!r.ok) throw new Error(`JSONBin read error ${r.status}`);
     const j = await r.json();
     seguimientoCache = j.record.seguimiento || {};
+    // Sincronizar localStorage con lo que viene de la nube
+    localStorage.setItem('cnel_seg', JSON.stringify(seguimientoCache));
     // Aplicar a trabajos en memoria
     ALL.forEach(t => {
       if(seguimientoCache[t.id]) Object.assign(t, seguimientoCache[t.id]);
     });
+    console.log('Seguimiento cargado desde la nube:', Object.keys(seguimientoCache).length, 'registros');
   } catch(e){
-    console.warn('No se pudo cargar seguimiento de la nube:', e.message);
-    // Fallback a localStorage
+    console.warn('Fallback a localStorage:', e.message);
+    // Fallback a localStorage solo si JSONBin falla
     seguimientoCache = JSON.parse(localStorage.getItem('cnel_seg')||'{}');
     ALL.forEach(t => {
       if(seguimientoCache[t.id]) Object.assign(t, seguimientoCache[t.id]);
@@ -704,17 +731,43 @@ async function guardarSeguimientoNube(){
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_KEY
+        'X-Master-Key': JSONBIN_KEY,
+        'X-Bin-Versioning': 'false'
       },
       body: JSON.stringify({seguimiento: seguimientoCache})
     });
-    if(!r.ok) throw new Error('Error guardando en JSONBin');
-    // También guardar en localStorage como backup
+    if(!r.ok){
+      const txt = await r.text();
+      throw new Error(`JSONBin error ${r.status}: ${txt}`);
+    }
+    // Guardar en localStorage como backup
     localStorage.setItem('cnel_seg', JSON.stringify(seguimientoCache));
+    return true;
   } catch(e){
-    console.warn('No se pudo guardar en la nube:', e.message);
+    console.error('Error guardando en la nube:', e.message);
     // Al menos guardar en localStorage
     localStorage.setItem('cnel_seg', JSON.stringify(seguimientoCache));
+    throw e; // re-throw so caller knows it failed
+  }
+}
+
+async function actualizarSeguimiento(){
+  const btn = document.getElementById('btnRefresh');
+  const lbl = document.getElementById('lastUpdate');
+  if(btn){ btn.classList.add('loading'); btn.textContent='⏳ Actualizando...'; }
+  try{
+    await cargarSeguimiento();
+    // Refresh current view
+    if(currentView==='home') renderHome();
+    else if(currentView==='unit') applyUnitFilters();
+    else if(currentView==='all') applyAllFilters();
+    const now = new Date();
+    const hora = now.toLocaleTimeString('es-EC', {hour:'2-digit',minute:'2-digit'});
+    if(lbl) lbl.textContent = `Actualizado ${hora}`;
+  } catch(e){
+    if(lbl) lbl.textContent = 'Error al actualizar';
+  } finally {
+    if(btn){ btn.classList.remove('loading'); btn.textContent='🔄 Actualizar'; }
   }
 }
 
